@@ -1,9 +1,10 @@
-from typing import Union, List, Dict, Callable
+from abc import ABC, abstractmethod
+from typing import Union, List, Dict, Callable, Tuple
 
 from code_genie.client import Client, GetExecutableRequest
 
 
-class Genie:
+class GenieBase(ABC):
 
     def __init__(self,
                  instructions: Union[str, List[str]],
@@ -15,11 +16,12 @@ class Genie:
             instructions = [instructions]
         self._instructions = instructions
         self._allowed_imports = allowed_imports
-        self._code, self._fn_name = client.get_generic(
-            GetExecutableRequest(instructions=instructions,
-                                 inputs=inputs,
-                                 allowed_imports=allowed_imports))
+        self._code, self._fn_name = self._get_code(client=client)
         self._executor = self._extract_executable(self._code, self._fn_name)
+
+    @abstractmethod
+    def _get_code(self, client: Client) -> Tuple[str, str]:
+        raise NotImplementedError
 
     @classmethod
     def _extract_executable(cls, code: str, fn_name: str) -> Callable:
@@ -34,3 +36,12 @@ class Genie:
     @property
     def code(self):
         return self._code
+
+
+class Genie(GenieBase):
+
+    def _get_code(self, client: Client) -> Tuple[str, str]:
+        return client.get_generic(
+            GetExecutableRequest(instructions=self._instructions,
+                                 inputs=self._inputs,
+                                 allowed_imports=self._allowed_imports))
