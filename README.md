@@ -1,6 +1,8 @@
 # code-genie
 This library is your copilot for jupyter notebooks
 
+Latest version: 0.1.0
+
 ## Installation
 
 ```bash
