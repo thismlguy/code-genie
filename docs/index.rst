@@ -9,19 +9,25 @@ Welcome to code-genie's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+      genie
 
 code-genie will help you bring the power of chatGPT technology to your notebooks.
 
-Look how easy it is to use:
+Look how easy it is to use::
 
-``
-from code_genie import PandasGenie
-df = load_your_df()
-genie = PandasGenie(instructions="create a dataframe with number of missing values per column")
-df_missing = genie(df)
-``
+   from code_genie import PandasGenie
+   df = load_your_df()
+   genie = PandasGenie(instructions="create a dataframe with number of missing values per column")
+   df_missing = genie(df)
 
 Find more examples in the `examples` folder.
+
+Installation
+------------
+
+Install code-genie by running:
+
+``pip install code_genie``
 
 Features
 --------
@@ -29,24 +35,14 @@ Features
 - Create functions from text and re-use them as you want
 - No more spending hours searching for syntax on stack overflow
 
-Installation
-------------
+API Docs
+==================
 
-Install code-genie by running:
-
-``
-pip install code_genie
-``
+:doc:`genie`
+    Documentation for genie classes
 
 Contribute
 ----------
 
 - Issue Tracker: https://github.com/thismlguy/code-genie/issues
 - Source Code: https://github.com/thismlguy/code-genie
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
