@@ -15,7 +15,7 @@ class Test(TestCase):
                     allowed_imports=["math"])
         # call the method
         self.assertEqual(add(num1=1, num2=2), 3)
-        self.assertEqual(add(num1=6, num2=12), 18)
+        self.assertEqual(add(6, 12), 18)
 
     def test_pd_mean(self):
         # use genie to get a method to get the mean of a list of numbers

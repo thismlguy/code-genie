@@ -30,8 +30,8 @@ class GenieBase(ABC):
         exec(code, mem)
         return mem[fn_name]
 
-    def __call__(self, **kwargs):
-        return self._executor(**kwargs)
+    def __call__(self, *args, **kwargs):
+        return self._executor(*args, **kwargs)
 
     @property
     def code(self):
@@ -51,7 +51,7 @@ class PandasGenie(GenieBase):
 
     def __init__(self,
                  instructions: Union[str, List[str]],
-                 columns: List[str],
+                 columns: Optional[List[str]] = None,
                  inputs: Optional[Dict[str, str]] = None,
                  allowed_imports: Optional[List[str]] = None,
                  client: Optional[Client] = None):
