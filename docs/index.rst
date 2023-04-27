@@ -7,9 +7,6 @@ Welcome to code-genie's documentation!
 ======================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-      genie
 
 code-genie will help you bring the power of chatGPT technology to your notebooks.
 
@@ -36,7 +33,7 @@ Features
 - No more spending hours searching for syntax on stack overflow
 
 API Docs
-==================
+-----------
 
 :doc:`genie`
     Documentation for genie classes

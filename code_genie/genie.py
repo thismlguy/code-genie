@@ -55,7 +55,8 @@ class GenieBase(ABC):
 
 
 class Genie(GenieBase):
-    """A generic genie creator with no presets or additional functionality"""
+    """A generic genie creator with no presets or additional functionality
+    """
 
     def _get_code(self, client: Client) -> Tuple[str, str]:
         return client.get_generic(
@@ -65,7 +66,8 @@ class Genie(GenieBase):
 
 
 class PandasGenie(GenieBase):
-    """Pandas specific genie creator. This is specially configured to work with pandas dataframes."""
+    """Pandas specific genie creator. This is specially configured to work with pandas dataframes.
+    """
 
     def __init__(self,
                  instructions: Union[str, List[str]],
