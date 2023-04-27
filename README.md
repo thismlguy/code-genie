@@ -5,7 +5,7 @@ Latest version: 0.1.2
 
 ## Documentation
 
-- [Started Notebook](https://code-genie.readthedocs.io/en/main/notebooks/Starter.html)
+- [Starter Notebook](https://code-genie.readthedocs.io/en/main/notebooks/Starter.html)
 - [All Examples](https://code-genie.readthedocs.io/en/main/examples.html)
 - [API Documentation](https://code-genie.readthedocs.io/en/main/api.html)
 
