@@ -35,7 +35,8 @@ build = [
     "tox>=3.24,<4",
     "isort>=5.10,<6",
     "python-dotenv",
-    "pip-tools"
+    "pip-tools",
+    "bumpversion"
 ]
 docs = [
     "sphinx==5.3.0",
