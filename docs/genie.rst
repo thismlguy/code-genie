@@ -1,10 +1,9 @@
 PandasGenie
 --------------------------
 
-.. autoclass:: code_genie.genie.PandasGenie
-
+.. autoclass:: PandasGenie
 
 Genie
 --------------------------
 
-.. autoclass:: code_genie.genie.Genie
+.. autoclass:: Genie

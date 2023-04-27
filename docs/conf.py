@@ -13,7 +13,10 @@ author = 'Aarshay Jain'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.napoleon', 'sphinx.ext.autodoc', 'sphinx.ext.viewcode']
+extensions = ['sphinx.ext.napoleon',
+              'sphinx.ext.autodoc',
+              'sphinx.ext.viewcode',
+              'sphinx.ext.autosummary']
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 autodoc_default_options = {

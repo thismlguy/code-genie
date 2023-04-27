@@ -7,6 +7,12 @@ Welcome to code-genie's documentation!
 ======================================
 
 .. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   Home <self>
+   API <api>
+   Examples <examples>
 
 code-genie will help you bring the power of chatGPT technology to your notebooks.
 
@@ -31,12 +37,6 @@ Features
 
 - Create functions from text and re-use them as you want
 - No more spending hours searching for syntax on stack overflow
-
-API Docs
------------
-
-:doc:`genie`
-    Documentation for genie classes
 
 Contribute
 ----------
