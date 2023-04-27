@@ -40,7 +40,9 @@ build = [
 docs = [
     "sphinx==5.3.0",
     "autodocsumm",
-    "sphinx_rtd_theme"
+    "sphinx_rtd_theme",
+    "nbsphinx",
+    "sphinx_gallery"
 ]
 notebook = [
     "jupyterlab>=3.1,<4",

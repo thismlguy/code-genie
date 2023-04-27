@@ -6,6 +6,11 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath('..'))
+
 project = 'code-genie'
 copyright = '2023, Aarshay Jain'
 author = 'Aarshay Jain'
@@ -16,7 +21,9 @@ author = 'Aarshay Jain'
 extensions = ['sphinx.ext.napoleon',
               'sphinx.ext.autodoc',
               'sphinx.ext.viewcode',
-              'sphinx.ext.autosummary']
+              'sphinx.ext.autosummary',
+              "nbsphinx",
+              "sphinx_gallery.load_style"]
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 autodoc_default_options = {

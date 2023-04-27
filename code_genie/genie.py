@@ -97,7 +97,9 @@ class PandasGenie(GenieBase):
         super().__init__(instructions, inputs, allowed_imports, client)
 
     @staticmethod
-    def _process_columns(columns: List[str]) -> List[str]:
+    def _process_columns(columns: Optional[List[str]] = None) -> List[str]:
+        if columns is None:
+            return columns
         # check input should be a list of strings
         if isinstance(input, str):
             raise TypeError("input should be an iterable, not a string")
