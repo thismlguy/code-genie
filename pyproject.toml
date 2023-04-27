@@ -34,7 +34,20 @@ build = [
     "pytest-cov>=2.5,<3",
     "tox>=3.24,<4",
     "isort>=5.10,<6",
-    "python-dotenv"
+    "python-dotenv",
+    "pip-tools",
+    "bumpversion"
+]
+docs = [
+    "sphinx==5.3.0",
+    "autodocsumm",
+    "sphinx_rtd_theme",
+    "nbsphinx",
+    "sphinx_gallery"
+]
+notebook = [
+    "jupyterlab>=3.1,<4",
+    "ipykernel>=6.0,<7",
 ]
 
 [project.urls]

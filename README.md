@@ -1,6 +1,14 @@
 # code-genie
 This library is your copilot for jupyter notebooks
 
+Latest version: 0.1.2
+
+## Documentation
+
+- [Started Notebook](https://code-genie.readthedocs.io/en/latest/notebooks/Starter.html)
+- [All Exampples](https://code-genie.readthedocs.io/en/latest/examples.html)
+- [API Documentation](https://code-genie.readthedocs.io/en/latest/api.html)
+
 ## Installation
 
 ```bash
