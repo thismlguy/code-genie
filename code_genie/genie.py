@@ -97,7 +97,7 @@ class PandasGenie(GenieBase):
         super().__init__(instructions, inputs, allowed_imports, client)
 
     @staticmethod
-    def _process_columns(columns: Optional[List[str]] = None) -> List[str]:
+    def _process_columns(columns: Optional[List[str]]) -> Optional[List[str]]:
         if columns is None:
             return columns
         # check input should be a list of strings
