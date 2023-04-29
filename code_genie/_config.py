@@ -24,13 +24,3 @@ class _Config:
         # if attribute not present, raise error
         for option, value in options.items():
             cls._set_option(option, value)
-
-
-def set_options(options: Dict[str, Any]):
-    """
-    Set global options for the package
-
-    Args:
-        options: dictionary containing (name, value) of the options to set. allowed keys: ['cache_code', 'cache_path']
-    """
-    _Config._set_options(options)

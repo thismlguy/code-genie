@@ -1,4 +1,25 @@
 __version__ = "0.2.0-dev0"
 
-from code_genie._config import set_options
-from code_genie.genie import Genie, PandasGenie
+from typing import Dict, Any
+
+from code_genie._cache import _CacheManager
+from code_genie._config import _Config
+
+# initialize global cache
+CACHE = _CacheManager(filepath=_Config.cache_path)
+
+
+def set_options(options: Dict[str, Any]):
+    """
+    Set global options for the package
+
+    Args:
+        options: dictionary containing (name, value) of the options to set. allowed keys: ['cache_code', 'cache_path']
+    """
+    _Config._set_options(options)
+
+    # if cache path is set, then reload cache
+    new_cache_path = options.get("cache_path")
+    if new_cache_path:
+        global CACHE
+        CACHE = _CacheManager.reload(new_cache_path)

@@ -64,8 +64,5 @@ class PandasGenie(GenieBase):
                                        allowed_imports=self._allowed_imports))
 
     def _get_cache_key(self) -> _CacheKeyPandas:
-        return _CacheKeyPandas(key=self.__class__.__name__,
-                               instructions=self._instructions_hashable(),
-                               inputs=self._input_hashable() if self._inputs else None,
-                               allowed_imports=tuple(self._allowed_imports or []),
-                               columns=tuple(self._columns or []))
+        base = super()._get_cache_key()
+        return _CacheKeyPandas(columns=tuple(self._columns or []), **base.__dict__)

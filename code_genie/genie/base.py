@@ -1,21 +1,16 @@
-import logging
 from abc import ABC, abstractmethod
 from typing import Union, List, Dict, Optional, Tuple, Callable
 
-from code_genie._config import _Config
-from code_genie._cache import _CacheManager, _CacheKey, _CacheValue
+from code_genie._cache import _CacheKey, _CacheValue
 from code_genie.client import Client
-
-
-CACHE = _CacheManager(filepath=_Config.cache_path)
-logger = logging.getLogger(__name__)
+from code_genie import CACHE
 
 
 class GenieBase(ABC):
 
     def __init__(self,
                  instructions: Union[str, List[str]],
-                 inputs: Dict[str, str],
+                 inputs: Optional[Dict[str, str]] = None,
                  allowed_imports: Optional[List[str]] = None,
                  override: bool = False,
                  client: Optional[Client] = None):
@@ -47,7 +42,7 @@ class GenieBase(ABC):
             cache_key = self._get_cache_key()
             cache_value = CACHE.get(cache_key)
             if cache_value is not None:
-                logger.info(f"Loading executor from cache, set override = True to rerun")
+                print(f"Loading executor from cache, set override = True to rerun")
                 self._code = cache_value.code
                 self._fn_name = cache_value.fn_name
                 self._executor = self._extract_executable(self._code, self._fn_name)
@@ -80,7 +75,7 @@ class GenieBase(ABC):
         return "::".join(self._instructions)
 
     def _input_hashable(self) -> Tuple[Tuple[str, str], ...]:
-        return tuple(sorted(self._inputs.items()))
+        return tuple(sorted((self._inputs or {}).items()))
 
     def _get_cache_key(self) -> _CacheKey:
         return _CacheKey(key=self.__class__.__name__,

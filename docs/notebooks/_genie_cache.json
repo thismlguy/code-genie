@@ -1,0 +1,10 @@
+{
+    "533479337795480949": {
+        "code": "import pandas as pd\nimport random\n\ndef generate_employee_df():\n    # creating lists for random values\n    id_list = [i+1 for i in range(100)]\n    name_list = ['Employee'+str(i+1) for i in range(100)]\n    salary_list = [random.randint(50000, 200000) for i in range(100)]\n    department_list = ['engineering' if random.randint(0, 1) else 'product' for i in range(100)]\n    \n    # creating dataframe\n    df = pd.DataFrame({'id': id_list, \n                       'name': name_list, \n                       'salary': salary_list, \n                       'department': department_list})\n    \n    return df",
+        "fn_name": "generate_employee_df"
+    },
+    "-6023732936934287801": {
+        "code": "import numpy as np\nimport pandas as pd\n\ndef generate_employee_df():\n    # Define possible names\n    names = ['Alice', 'Bob', 'Charlie', 'Dave', 'Emily', 'Frank', 'Gina', 'Hannah', 'Ivan', 'Jack']\n    \n    # Generate random employee information\n    ids = np.random.randint(1000, 9999, size=100)\n    names = np.random.choice(names, size=100)\n    salaries = np.random.randint(50000, 120000, size=100)\n    departments = np.random.choice(['engineering', 'product'], size=100)\n    \n    # Create dataframe\n    employee_df = pd.DataFrame({'id': ids, 'name': names, 'salary': salaries, 'department': departments})\n    \n    return employee_df\n",
+        "fn_name": "generate_employee_df"
+    }
+}

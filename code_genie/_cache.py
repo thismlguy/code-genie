@@ -28,10 +28,23 @@ class _CacheValue(BaseModel):
 
 class _CacheManager:
 
+    DEFAULT_NAME = "_genie_cache.json"
+
     def __init__(self, filepath: str):
-        self.filepath = filepath
+        self.filepath = self._get_filename(filepath)
         self._cache = self._load()
-        logger.info(f"Loaded {len(self._cache)} items from cache")
+        if len(self._cache) > 0:
+            logger.info(f"Loaded {len(self._cache)} items from cache file {self.filepath}")
+
+    @classmethod
+    def reload(cls, filepath: str):
+        return cls(filepath)
+
+    def _get_filename(self, name: Optional[str] = None):
+        # if this is directory, append default name
+        if os.path.isdir(name):
+            return os.path.join(name, self.DEFAULT_NAME)
+        return name
 
     def _load(self) -> Dict[int, Dict[str, str]]:
         if not os.path.exists(self.filepath):
@@ -39,7 +52,7 @@ class _CacheManager:
         with open(self.filepath, "r") as f:
             return json.load(f)
 
-    def update(self, key: _CacheKey, value: _CacheValue):
+    def update(self, key: str, value: _CacheValue):
         self._cache[key.__hash__()] = value.dict()
         with open(self.filepath, "w") as f:
             json.dump(self._cache, f, indent=4)

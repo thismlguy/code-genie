@@ -11,5 +11,5 @@ class Genie(GenieBase):
     def _get_code(self, client: Client) -> Tuple[str, str]:
         return client.get_generic(
             GetExecutableRequest(instructions=self._instructions,
-                                 inputs=self._inputs,
+                                 inputs=self._inputs or {},
                                  allowed_imports=self._allowed_imports))

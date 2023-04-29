@@ -12,10 +12,8 @@ class GetExecutableRequest(BaseModel):
     allowed_imports: Optional[List[str]] = None
 
 
-class GetPandasExecutableRequest(BaseModel):
-    instructions: Union[str, List[str]]
+class GetPandasExecutableRequest(GetExecutableRequest):
     inputs: Optional[Dict[str, str]] = None
-    allowed_imports: Optional[List[str]] = None
     columns: Optional[List[str]] = None
 
 
