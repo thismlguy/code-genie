@@ -1,0 +1,27 @@
+{
+    "308ea4408bf138110b1cf381763c19a747c3420981ddcdef83acbe7fd53a3aefc06f942dfe35daea93497bfefe1158a2c7d20776c3dd6e16213bd12e6f967f9a": {
+        "filename": "generate_employee_df_41317.py",
+        "fn_name": "generate_employee_df"
+    },
+    "0c8c445e7d3df2205c953e4637cf27fdbff7ef5d0aa4fd4bb344da12960bcafe7e9e7e683588921480283373a6b6a0f0393ac51a3bf8b4bef3f0d10bc9840784": {
+        "filename": "make_salaries_missing_76197.py",
+        "fn_name": "make_salaries_missing"
+    },
+    "9c203807fc44999a07234202a84918cd67d699dff7f67f2a21f7d8b4a7faf855529c82b111890a97b248a7a72a12f9eea87d5ec1f315817bf0ed70ad0d1671e9": {
+        "filename": "count_missing_35951.py",
+        "fn_name": "count_missing"
+    },
+    "295335dcc576497fb8dc10ec8004be1d84e7155617ecca9355d64dffb38d92d16d315c615c21b17ef77d95a49977a2f35ea08021ffa0072b05c4b6128e621245": {
+        "filename": "plot_salary_distribution_54098.py",
+        "fn_name": "plot_salary_distribution"
+    },
+    "afa88f466ce92056cb4e0b0dd9f15f72ba2a93cc23baa4c3e67238704be2cb9b228245f38ffce0cadd84228453d0c48cd55a7b898aef9ba60e01a9439254b4ac": {
+        "filename": "make_boxplots_25996.py",
+        "fn_name": "make_boxplots"
+    },
+    "c4e1f86f22374f296b616a15dc7bfdc76e45d7c2bfc977926e4adc6cdf48a7a501b44188743929c4f0d70c825395cbbdd409ee4a3fc08cc1357531003486cc46": {
+        "filename": "count_high_earners_86151.py",
+        "fn_name": "count_high_earners",
+        "code": "import pandas as pd\nimport numpy as np\n\ndef count_high_earners(df):\n    high_earners = df[df['salary'] > 100000].groupby('department')['id'].count()\n    return high_earners\n"
+    }
+}

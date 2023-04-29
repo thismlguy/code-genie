@@ -133,3 +133,7 @@ dmypy.json
 
 # keys
 key/
+
+# test cache
+tests/_cache
+test_reports

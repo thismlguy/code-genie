@@ -1,4 +1,13 @@
+__version__ = "0.2.0"
 
-__version__ = "0.1.2"
+from code_genie._cache import _CacheManager
 
-from code_genie.genie import Genie, PandasGenie
+
+def set_cache_dir(path: str):
+    """
+    Set global options for the package
+
+    Args:
+        path: path to the cache dir
+    """
+    _CacheManager._set_cache_dir(path)
