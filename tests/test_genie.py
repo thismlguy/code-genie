@@ -1,13 +1,9 @@
-
-
 import pandas as pd
 
-from code_genie import set_options
 from code_genie.genie import PandasGenie, Genie
 
 
-def test_add(client, cache_dir):
-    set_options({"cache_dir": cache_dir})
+def test_add(client):
     # use genie to get a method to add 2 numbers
     add = Genie(instructions="add num1 and num2",
                 inputs={"num1": "int", "num2": "int"},

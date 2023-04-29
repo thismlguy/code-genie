@@ -2,21 +2,12 @@ import json
 import logging
 import os
 from hashlib import blake2b
-from typing import Dict, Tuple, Optional
+from tempfile import mkdtemp
+from typing import Dict, Optional
 
 from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
-
-
-class _CacheKey(BaseModel):
-    key: str
-    instructions: str
-    inputs: Tuple[Tuple[str, str], ...]
-    allowed_imports: Tuple[str, ...]
-
-    class Config:
-        frozen = True
 
 
 class _MetaValue(BaseModel):
@@ -38,12 +29,17 @@ class _CacheManager:
 
     DEFAULT_NAME = "_genie_cache.json"
     META_NAME = "_meta.json"
+    DEFAULT_CACHE_DIR = mkdtemp()
 
-    def __init__(self, cache_dir: str):
-        self.cache_dir, self.meta_path = self._check_cache_dir(cache_dir)
-        self._cache = self._load()
-        if len(self._cache) > 0:
-            logger.info(f"Loaded {len(self._cache)} items from cache file {self.cache_dir}")
+    def __init__(self, cache_dir: Optional[str] = None):
+        self.cache_dir, self.meta_path = self._check_cache_dir(cache_dir or self.DEFAULT_CACHE_DIR)
+        self._cache_meta = self._load_meta()
+        if len(self._cache_meta) > 0:
+            logger.info(f"Loaded {len(self._cache_meta)} items from cache file {self.cache_dir}")
+
+    @classmethod
+    def _set_cache_dir(cls, cache_dir: str):
+        cls.DEFAULT_CACHE_DIR = cache_dir
 
     @classmethod
     def reload(cls, filepath: str):
@@ -71,18 +67,16 @@ class _CacheManager:
         except:
             return obj
 
-    def _load(self) -> Dict[str, _CacheValue]:
+    def _load_meta(self) -> Dict[str, _MetaValue]:
         if not os.path.exists(self.meta_path):
             return {}
         with open(self.meta_path, "r") as f:
             meta_data: Dict[str, _MetaValue] = json.load(f, object_hook=self._json_decoder(_MetaValue))
-        # read all files in meta and create cache values
-        cache = {}
-        for key, item in meta_data.items():
-            with open(os.path.join(self.cache_dir, item.filename), "r") as f:
-                code = f.read()
-            cache[self._consistent_hash(key)] = _CacheValue(code=code, **item.dict())
-        return cache
+        return meta_data
+
+    def _load_code(self, filename: str) -> str:
+        with open(os.path.join(self.cache_dir, filename), "r") as f:
+            return f.read()
 
     @classmethod
     def _consistent_hash(cls, value: str) -> str:
@@ -90,13 +84,9 @@ class _CacheManager:
         h.update(bytes(value, 'utf-8'))
         return h.hexdigest()
 
-    @property
-    def _cache_meta(self):
-        return {key: _MetaValue(filename=value.filename, fn_name=value.fn_name) for key, value in self._cache.items()}
-
     def update(self, key: str, value: _CacheValue):
         key_hash = self._consistent_hash(key)
-        self._cache[key_hash] = value
+        self._cache_meta[key_hash] = value
         # write to code file
         with open(os.path.join(self.cache_dir, value.filename), "w") as f:
             f.write(value.code)
@@ -105,7 +95,11 @@ class _CacheManager:
             json.dump(self._cache_meta, f, indent=4, default=self._json_encoder)
 
     def get(self, key: str) -> Optional[_CacheValue]:
-        return self._cache.get(self._consistent_hash(key), None)
+        meta = self._cache_meta.get(self._consistent_hash(key), None)
+        if meta is not None:
+            code = self._load_code(meta.filename)
+            return _CacheValue(code=code, filename=meta.filename, fn_name=meta.fn_name)
+        return None
 
     def num_items(self):
-        return len(self._cache)
+        return len(self._cache_meta)
