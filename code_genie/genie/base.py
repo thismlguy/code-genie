@@ -45,9 +45,10 @@ class GenieBase(ABC):
         cache = _CacheManager(cache_dir)
         cache_key = self._get_hash_str()
         cache_value = cache.get(cache_key)
+        self._filename = cache_value.filename if cache_value else self._generate_export_filename()
         if not override:
             if cache_value is not None:
-                print(f"Loading executor from cache, set override = True to rerun")
+                print(f"Loading executor from cache file {cache_value.filename}, set override = True to rerun")
                 self._code = cache_value.code
                 self._fn_name = cache_value.fn_name
                 self._executor = self._extract_executable(self._code, self._fn_name)
@@ -55,8 +56,8 @@ class GenieBase(ABC):
         # override or cache not found
         self._code, self._fn_name = self._get_code(client=client or Client())
         self._executor = self._extract_executable(self._code, self._fn_name)
-        self._filename = cache_value.filename if cache_value else self._generate_export_filename()
         cache.update(cache_key, _CacheValue(code=self._code, fn_name=self._fn_name, filename=self._filename))
+        print(f"Executor saved to cache file {self._filename}")
 
     @abstractmethod
     def _get_code(self, client: Client) -> Tuple[str, str]:
@@ -103,3 +104,8 @@ class GenieBase(ABC):
             else:
                 raise ValueError(f"Cannot hash attribute of type {type(attr)}")
         return sep.join(hash_str)
+
+    @property
+    def filename(self):
+        """The filename of the cache file"""
+        return self._filename
