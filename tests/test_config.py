@@ -1,21 +1,14 @@
-from unittest import TestCase
-
-from code_genie._config import _Config, set_options
+from code_genie import set_options
 
 
-class Test(TestCase):
+def test_set_options_cache_code(default_config):
+    assert default_config.cache_code
+    set_options({"cache_code": False})
+    assert not default_config.cache_code
 
-    def setUp(self) -> None:
-        self.config = _Config
 
-    def test_set_options_cache_code(self):
-        self.assertTrue(self.config.cache_code)
-        set_options({"cache_code": False})
-        self.assertFalse(self.config.cache_code)
+def test_set_options_cache_path(default_config, cache_dir):
+    assert default_config.cache_dir == default_config.cache_dir
 
-    def test_set_options_cache_path(self):
-        config = _Config
-        self.assertEqual(self.config.cache_path, config.cache_path)
-
-        set_options({"cache_path": "tests"})
-        self.assertEqual(self.config.cache_path, "tests")
+    set_options({"cache_dir": cache_dir})
+    assert default_config.cache_dir == cache_dir

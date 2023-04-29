@@ -1,4 +1,4 @@
-from tempfile import NamedTemporaryFile
+from tempfile import mkdtemp
 from typing import Any, Dict
 
 
@@ -6,7 +6,7 @@ class _Config:
 
     # set default values
     cache_code: bool = True
-    cache_path: str = NamedTemporaryFile().name
+    cache_dir: str = mkdtemp()
 
     @classmethod
     def _all_options(cls):

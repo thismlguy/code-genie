@@ -6,7 +6,7 @@ from code_genie._cache import _CacheManager
 from code_genie._config import _Config
 
 # initialize global cache
-CACHE = _CacheManager(filepath=_Config.cache_path)
+CACHE = _CacheManager(cache_dir=_Config.cache_dir)
 
 
 def set_options(options: Dict[str, Any]):
@@ -19,7 +19,7 @@ def set_options(options: Dict[str, Any]):
     _Config._set_options(options)
 
     # if cache path is set, then reload cache
-    new_cache_path = options.get("cache_path")
+    new_cache_path = options.get("cache_dir")
     if new_cache_path:
         global CACHE
         CACHE = _CacheManager.reload(new_cache_path)

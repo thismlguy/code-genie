@@ -30,8 +30,8 @@ class Client:
     ENDPOINT_GENERIC = "get-executable/generic"
     ENDPOINT_PANDAS = "get-executable/pandas"
 
-    def __init__(self):
-        self._token = os.environ[self.TOKEN_ENV_VAR]
+    def __init__(self, token: Optional[str] = None):
+        self._token = token or os.environ[self.TOKEN_ENV_VAR]
 
     def _get_response(self, endpoint, data):
         headers = {

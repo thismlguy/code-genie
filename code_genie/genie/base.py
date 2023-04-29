@@ -1,5 +1,6 @@
+import random
 from abc import ABC, abstractmethod
-from typing import Union, List, Dict, Optional, Tuple, Callable
+from typing import Union, List, Dict, Optional, Tuple, Callable, Any
 
 from code_genie._cache import _CacheKey, _CacheValue
 from code_genie.client import Client
@@ -38,9 +39,9 @@ class GenieBase(ABC):
         self._allowed_imports = allowed_imports
 
         # check cache
+        cache_key = self._get_hash_str()
+        cache_value = CACHE.get(cache_key)
         if not override:
-            cache_key = self._get_cache_key()
-            cache_value = CACHE.get(cache_key)
             if cache_value is not None:
                 print(f"Loading executor from cache, set override = True to rerun")
                 self._code = cache_value.code
@@ -50,7 +51,8 @@ class GenieBase(ABC):
         # override or cache not found
         self._code, self._fn_name = self._get_code(client=client or Client())
         self._executor = self._extract_executable(self._code, self._fn_name)
-        CACHE.update(self._get_cache_key(), self._get_cache_value())
+        CACHE.update(cache_key,
+                     self._get_cache_value(filename=cache_value.filename if cache_value else None))
 
     @abstractmethod
     def _get_code(self, client: Client) -> Tuple[str, str]:
@@ -83,5 +85,33 @@ class GenieBase(ABC):
                          inputs=self._input_hashable(),
                          allowed_imports=tuple(self._allowed_imports or []))
 
-    def _get_cache_value(self) -> _CacheValue:
-        return _CacheValue(code=self._code, fn_name=self._fn_name)
+    @property
+    def _export_filename(self) -> str:
+        # use fn name with random 5 digit suffix
+        return f"{self._fn_name}_{random.randint(10000, 99999)}.py"
+
+    def _get_cache_value(self, filename: Optional[str]) -> _CacheValue:
+        return _CacheValue(code=self._code, fn_name=self._fn_name, filename=filename or self._export_filename)
+
+    def _hash_attributes(self) -> List[Any]:
+        return [self._instructions, self._inputs, self._allowed_imports]
+
+    def _get_hash_str(self) -> str:
+        sep = "::"
+        hash_str = []
+        for attr in self._hash_attributes():
+            # if string, add as is
+            if isinstance(attr, str):
+                hash_str.append(attr)
+            # if list of str, then join using sep
+            elif isinstance(attr, list):
+                hash_str.append(sep.join(attr))
+            # if dict, then convert to tuple of items
+            elif isinstance(attr, dict):
+                hash_str.append(sep.join([f"{k}={v}" for k, v in attr.items()]))
+            # if None, return empty str
+            elif attr is None:
+                hash_str.append("")
+            else:
+                raise ValueError(f"Cannot hash attribute of type {type(attr)}")
+        return sep.join(hash_str)
