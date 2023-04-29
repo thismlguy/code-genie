@@ -1,20 +1,21 @@
 import random
 from abc import ABC, abstractmethod
-from typing import Union, List, Dict, Optional, Tuple, Callable, Any
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
-from code_genie._cache import _CacheValue, _CacheManager
+from code_genie._cache import _CacheManager, _CacheValue
 from code_genie.client import Client
 
 
 class GenieBase(ABC):
-
-    def __init__(self,
-                 instructions: Union[str, List[str]],
-                 inputs: Optional[Dict[str, str]] = None,
-                 allowed_imports: Optional[List[str]] = None,
-                 override: bool = False,
-                 client: Optional[Client] = None,
-                 cache_dir: Optional[str] = None):
+    def __init__(
+        self,
+        instructions: Union[str, List[str]],
+        inputs: Optional[Dict[str, str]] = None,
+        allowed_imports: Optional[List[str]] = None,
+        override: bool = False,
+        client: Optional[Client] = None,
+        cache_dir: Optional[str] = None,
+    ):
         """Initialize a genie instance
 
         Args:
@@ -55,8 +56,7 @@ class GenieBase(ABC):
         self._code, self._fn_name = self._get_code(client=client or Client())
         self._executor = self._extract_executable(self._code, self._fn_name)
         self._filename = cache_value.filename if cache_value else self._generate_export_filename()
-        cache.update(cache_key,
-                     _CacheValue(code=self._code, fn_name=self._fn_name, filename=self._filename))
+        cache.update(cache_key, _CacheValue(code=self._code, fn_name=self._fn_name, filename=self._filename))
 
     @abstractmethod
     def _get_code(self, client: Client) -> Tuple[str, str]:

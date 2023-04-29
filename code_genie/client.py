@@ -1,5 +1,5 @@
 import os
-from typing import Union, List, Dict, Tuple, Optional
+from typing import Dict, List, Optional, Tuple, Union
 from uuid import UUID
 
 import requests
@@ -24,7 +24,6 @@ class GetExecutableResponse(BaseModel):
 
 
 class Client:
-
     TOKEN_ENV_VAR = "CODE_GENIE_TOKEN"
     URL = "https://code-scribe-pzj44qvhfa-el.a.run.app"
     ENDPOINT_GENERIC = "get-executable/generic"
@@ -34,10 +33,7 @@ class Client:
         self._token = token or os.environ[self.TOKEN_ENV_VAR]
 
     def _get_response(self, endpoint, data):
-        headers = {
-            "token": self._token,
-            "Content-Type": "application/json"
-        }
+        headers = {"token": self._token, "Content-Type": "application/json"}
         response = requests.post(url=f"{self.URL}/{endpoint}", data=data.json(), headers=headers)
         # if error found, raise the error
         response.raise_for_status()

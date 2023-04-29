@@ -1,21 +1,22 @@
-from typing import Union, List, Dict, Tuple, Optional, Any
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from code_genie.client import Client, GetPandasExecutableRequest
 from code_genie.genie.base import GenieBase
 
 
 class PandasGenie(GenieBase):
-    """Pandas specific genie creator. This is specially configured to work with pandas dataframes.
-    """
+    """Pandas specific genie creator. This is specially configured to work with pandas dataframes."""
 
-    def __init__(self,
-                 instructions: Union[str, List[str]],
-                 columns: Optional[List[str]] = None,
-                 inputs: Optional[Dict[str, str]] = None,
-                 allowed_imports: Optional[List[str]] = None,
-                 override: bool = False,
-                 client: Optional[Client] = None,
-                 cache_dir: Optional[str] = None):
+    def __init__(
+        self,
+        instructions: Union[str, List[str]],
+        columns: Optional[List[str]] = None,
+        inputs: Optional[Dict[str, str]] = None,
+        allowed_imports: Optional[List[str]] = None,
+        override: bool = False,
+        client: Optional[Client] = None,
+        cache_dir: Optional[str] = None,
+    ):
         """Initialize the Pandas Genie
 
         Args:
@@ -55,10 +56,13 @@ class PandasGenie(GenieBase):
 
     def _get_code(self, client: Client) -> Tuple[str, str]:
         return client.get_pandas(
-            GetPandasExecutableRequest(instructions=self._instructions,
-                                       inputs=self._inputs,
-                                       columns=self._columns,
-                                       allowed_imports=self._allowed_imports))
+            GetPandasExecutableRequest(
+                instructions=self._instructions,
+                inputs=self._inputs,
+                columns=self._columns,
+                allowed_imports=self._allowed_imports,
+            )
+        )
 
     def _hash_attributes(self) -> List[Any]:
         return [self._instructions, self._inputs, self._allowed_imports, self._columns]

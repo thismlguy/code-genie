@@ -26,7 +26,6 @@ class _CacheValue(_MetaValue):
 
 
 class _CacheManager:
-
     DEFAULT_NAME = "_genie_cache.json"
     META_NAME = "_meta.json"
     DEFAULT_CACHE_DIR = mkdtemp()
@@ -58,6 +57,7 @@ class _CacheManager:
                 return schema.parse_obj(obj)
             except:
                 return obj
+
         return decoder
 
     @staticmethod
@@ -81,7 +81,7 @@ class _CacheManager:
     @classmethod
     def _consistent_hash(cls, value: str) -> str:
         h = blake2b()
-        h.update(bytes(value, 'utf-8'))
+        h.update(bytes(value, "utf-8"))
         return h.hexdigest()
 
     def update(self, key: str, value: _CacheValue):
