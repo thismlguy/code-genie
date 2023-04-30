@@ -8,5 +8,5 @@ a preference, feel free to add a comment to the issue.
 - [ ] Github action based CD
 - [ ] Add a PlotGenie
 - [ ] Testing capability
-- [ ] Freeze code - API is not called again when a genie is reran unless explicitly overridden 
+- [x] Freeze code - API is not called again when a genie is reran unless explicitly overridden 
 - [ ] Convert set of genies into a python script
