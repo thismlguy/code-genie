@@ -1,7 +1,7 @@
 # code-genie
 This library is your copilot for jupyter notebooks
 
-Latest version: 0.2.0
+Latest version: 0.2.1-dev0
 
 ## Documentation
 
