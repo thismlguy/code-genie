@@ -1,6 +1,7 @@
 __version__ = "0.2.1-dev0"
 
 from code_genie._cache import _CacheManager
+from code_genie.genie import Genie
 
 
 def set_cache_dir(path: str):

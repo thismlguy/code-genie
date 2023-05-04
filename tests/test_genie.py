@@ -1,24 +1,37 @@
 import pandas as pd
 
-from code_genie.genie import PandasGenie, Genie
+from code_genie import Genie
 
 
 def test_add(client):
     # use genie to get a method to add 2 numbers
-    add = Genie(instructions="add num1 and num2",
-                inputs={"num1": "int", "num2": "int"},
-                allowed_imports=["math"],
-                client=client)
+    genie = Genie(inputs={"num1": 4, "num2": 2}, client=client)
+
     # call the method
-    assert add(num1=1, num2=2) == 3
-    assert add(6, 12) == 18
+    assert genie.plz(instructions="add num1 and num2") == 6
+    assert genie.plz(instructions="multiply num1 and num2") == 8
 
 
 def test_pd_mean(client):
-    # use genie to get a method to get the mean of a list of numbers
-    mean_sum = PandasGenie(instructions="sum of mean of columns x and y",
-                           columns=["x", "y"],
-                           client=client)
-    df = pd.DataFrame({"x": [1, 2, 3], "y": [4, 5, 6]})
+    df = pd.DataFrame({"x": [1, 2, 3, 1, 2, 3], "y": [4, 5, 6, 4, 5, 6]})
+    genie = Genie(inputs={"df": df}, client=client)
+
     # call the method
-    assert mean_sum(df=df) == 7
+    assert genie.plz(instructions="sum of mean of x and y") == 7
+    assert set(genie.plz(instructions="distinct values of x")) == {1, 2, 3}
+
+
+def test_cache(client):
+    # use genie to get a method to add 2 numbers
+    genie = Genie(inputs={"num1": 4, "num2": 2}, client=client)
+
+    # call the method
+    assert genie.plz(instructions="add num1 and num2") == 6
+    last_run_id_1 = genie.last_run_id
+
+    assert genie.plz(instructions="add num1 and num2") == 6
+    last_run_id_2 = genie.last_run_id
+    assert last_run_id_1 == last_run_id_2
+
+    assert genie.plz(instructions="add num1 and num2", override=True) == 6
+    assert last_run_id_2 != genie.last_run_id
