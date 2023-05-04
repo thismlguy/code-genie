@@ -18,10 +18,11 @@ code-genie will help you bring the power of chatGPT technology to your notebooks
 
 Look how easy it is to use::
 
-   from code_genie import PandasGenie
+   from code_genie import Genie
    df = load_your_df()
-   genie = PandasGenie(instructions="create a dataframe with number of missing values per column")
-   df_missing = genie(df)
+   genie = Genie(inputs={"df": df})
+   df_missing = genie.plz("create a dataframe with number of missing values per column")
+   genie.plz("make scatter plot of col1 vs col2")
 
 Find more examples in the `examples` folder.
 
