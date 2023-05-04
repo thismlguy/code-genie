@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class _MetaValue(BaseModel):
-    filename: str
+    id: str
     fn_name: str
 
     class Config:
@@ -71,8 +71,8 @@ class _CacheManager:
             meta_data: Dict[str, _MetaValue] = json.load(f, object_hook=self._json_decoder(_MetaValue))
         return meta_data
 
-    def _load_code(self, filename: str) -> str:
-        with open(os.path.join(self.cache_dir, filename), "r") as f:
+    def _load_code(self, id: str) -> str:
+        with open(self._get_filename(id), "r") as f:
             return f.read()
 
     @classmethod
@@ -81,18 +81,21 @@ class _CacheManager:
         h.update(bytes(value, "utf-8"))
         return h.hexdigest()
 
+    def _get_filename(self, id: str) -> str:
+        return os.path.join(self.cache_dir, f"{id}.py")
+
     def update(self, key: str, value: _CacheValue):
         _cache_meta = self._load_meta()
         key_hash = self._consistent_hash(key)
 
         # if key is present in, delete the file which is currently cashed
         if key_hash in _cache_meta:
-            os.remove(os.path.join(self.cache_dir, _cache_meta[key_hash].filename))
+            os.remove(self._get_filename(_cache_meta[key_hash].id))
 
         # add new cash entry
         _cache_meta[key_hash] = value
         # write to code file
-        with open(os.path.join(self.cache_dir, value.filename), "w") as f:
+        with open(self._get_filename(value.id), "w") as f:
             f.write(value.code)
         # update metadata
         with open(self.meta_path, "w") as f:
@@ -102,9 +105,16 @@ class _CacheManager:
         _cache_meta = self._load_meta()
         meta = _cache_meta.get(self._consistent_hash(key), None)
         if meta is not None:
-            code = self._load_code(meta.filename)
-            return _CacheValue(code=code, filename=meta.filename, fn_name=meta.fn_name)
+            code = self._load_code(meta.id)
+            return _CacheValue(code=code, id=meta.id, fn_name=meta.fn_name)
         return None
 
     def num_items(self):
         return len(self._load_meta())
+
+    def get_all_code_segments(self) -> Dict[str, str]:
+        _cache_meta = self._load_meta()
+        code_segments = {}
+        for meta in _cache_meta.values():
+            code_segments[meta.id] = self._load_code(meta.id)
+        return code_segments

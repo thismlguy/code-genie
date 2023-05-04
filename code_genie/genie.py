@@ -8,7 +8,6 @@ from code_genie.client import Client, GetExecutableRequest
 
 
 class Genie:
-
     _hash_sep = "::"
 
     def __init__(
@@ -35,16 +34,20 @@ class Genie:
         """
         self._inputs = inputs
         self._allowed_imports = allowed_imports
-        self.cache = _CacheManager(cache_dir)
-        self.client = client or Client()
+        self._cache = _CacheManager(cache_dir)
+        self._client = client or Client()
 
         # cache last run id
-        self._last_run_id = None
+        self._latest_run_id = None
         self._latest_callable = None
+        self._latest_code = None
 
-    def plz(self, instructions: Optional[Union[str, List[str]]],
-            additional_inputs: Optional[Dict[str, Any]] = None,
-            override: bool = False):
+    def plz(
+        self,
+        instructions: Optional[Union[str, List[str]]],
+        additional_inputs: Optional[Dict[str, Any]] = None,
+        override: bool = False,
+    ):
         """Generate code for a new task
 
         Args:
@@ -63,24 +66,28 @@ class Genie:
 
         # check cache
         cache_key = self._get_hash_str(instructions, additional_inputs)
-        cache_value = self.cache.get(cache_key)
+        cache_value = self._cache.get(cache_key)
 
         # case: reading from cache
         if (not override) and (cache_value is not None):
-            code, fn_name, filename = cache_value.code, cache_value.fn_name, cache_value.filename
-            print(f"Loading cached genie id: {cache_value.filename}, set override = True to rerun")
+            code, fn_name, id = cache_value.code, cache_value.fn_name, cache_value.id
+            print(f"Loading cached genie id: {cache_value.id}, set override = True to rerun")
         # case: creating new genie
         else:
             code, fn_name = self._get_code(instructions, additional_inputs)
-            filename = self._generate_export_filename(fn_name)
-            self.cache.update(cache_key, _CacheValue(code=code, fn_name=fn_name, filename=filename))
-            print(f"Genie cached with id: {filename}")
+            id = self._generate_id(fn_name)
+            self._cache.update(cache_key, _CacheValue(code=code, fn_name=fn_name, id=id))
+            print(f"Genie cached with id: {id}")
 
         # create executor and return results
         executor = self._extract_executable(code, fn_name)
-        self._last_run_id = filename
+        self._latest_run_id = id
+        self._latest_code = code
         self._latest_callable = executor
-        return executor(**self._inputs, **(additional_inputs or {}))
+        return executor(**(self._combine_inputs(additional_inputs)))
+
+    def _combine_inputs(self, additional_inputs: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+        return {**(self._inputs or {}), **(additional_inputs or {})}
 
     @staticmethod
     def _create_input_str(x):
@@ -88,17 +95,12 @@ class Genie:
             return f"pandas dataframes with columns: {x.columns}"
         return f"{type(x)}"
 
-    def _get_code(self, instructions: List[str],
-                  additional_inputs: Dict[str, Any]) -> Tuple[str, str]:
-        input_str = {}
-        for key, value in self._inputs.items():
-            input_str[key] = self._create_input_str(value)
-        for key, value in (additional_inputs or {}).items():
-            input_str[key] = self._create_input_str(value)
-        return self.client.get_generic(
-            GetExecutableRequest(
-                instructions=instructions, inputs=input_str, allowed_imports=self._allowed_imports
-            )
+    def _get_code(self, instructions: List[str], additional_inputs: Dict[str, Any]) -> Tuple[str, str]:
+        input_str = {
+            key: self._create_input_str(value) for key, value in self._combine_inputs(additional_inputs).items()
+        }
+        return self._client.get_generic(
+            GetExecutableRequest(instructions=instructions, inputs=input_str, allowed_imports=self._allowed_imports)
         )
 
     @classmethod
@@ -109,9 +111,9 @@ class Genie:
         return mem[fn_name]
 
     @classmethod
-    def _generate_export_filename(cls, fn_name: str) -> str:
+    def _generate_id(cls, fn_name: str) -> str:
         # use fn name with random 5 digit suffix
-        return f"{fn_name}_{random.randint(10000, 99999)}.py"
+        return f"{fn_name}_{random.randint(10000, 99999)}"
 
     @classmethod
     def _list_to_str(cls, l: List[str]) -> str:
@@ -121,20 +123,22 @@ class Genie:
     def _inputs_to_str(cls, d: Dict[str, Any]) -> str:
         return cls._hash_sep.join([f"{k}={type(v)}" for k, v in d.items()])
 
-    def _get_hash_str(self, instructions: List[str],
-                      additional_inputs: Optional[Dict[str, Any]]) -> str:
+    def _get_hash_str(self, instructions: List[str], additional_inputs: Optional[Dict[str, Any]]) -> str:
         hash_strings = [
             self._list_to_str(instructions),
-            self._inputs_to_str(self._inputs),
+            self._inputs_to_str(self._inputs or {}),
             self._list_to_str(self._allowed_imports or {}),
-            self._inputs_to_str(additional_inputs or {})
+            self._inputs_to_str(additional_inputs or {}),
         ]
         return self._hash_sep.join(hash_strings)
 
     @property
     def last_run_id(self) -> str:
-        return self._last_run_id
+        return self._latest_run_id
 
     @property
     def latest_callable(self) -> Callable:
         return self._latest_callable
+
+    def read_cache(self):
+        return self._cache.get_all_code_segments()
