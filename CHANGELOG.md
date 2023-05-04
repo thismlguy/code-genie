@@ -3,6 +3,7 @@
 ## 0.3.0
 
   * BREAKING CHANGE: modify the api to have a single genie initialization with invocations using that object
+  * remove set_cache_dir method and make this a part of genie initialization
 
 ## 0.2.1
 
