@@ -3,7 +3,7 @@ import logging
 import os
 from hashlib import blake2b
 from tempfile import mkdtemp
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 
 from pydantic import BaseModel
 
@@ -13,6 +13,8 @@ logger = logging.getLogger(__name__)
 class _MetaValue(BaseModel):
     id: str
     fn_name: str
+    instructions: List[str]
+    inputs: List[str]
 
     class Config:
         frozen = True
@@ -106,7 +108,8 @@ class _CacheManager:
         meta = _cache_meta.get(self._consistent_hash(key), None)
         if meta is not None:
             code = self._load_code(meta.id)
-            return _CacheValue(code=code, id=meta.id, fn_name=meta.fn_name)
+            return _CacheValue(code=code, id=meta.id, fn_name=meta.fn_name, instructions=meta.instructions,
+                               inputs=meta.inputs)
         return None
 
     def num_items(self):

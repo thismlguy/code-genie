@@ -3,13 +3,23 @@ import pandas as pd
 from code_genie import Genie
 
 
-def test_add(client):
+def test_math(client):
     # use genie to get a method to add 2 numbers
     genie = Genie(inputs={"num1": 4, "num2": 2}, client=client)
 
     # call the method
     assert genie.plz(instructions="add num1 and num2") == 6
     assert genie.plz(instructions="multiply num1 and num2") == 8
+
+
+def test_math_additional_inputs(client):
+    # use genie to get a method to add 2 numbers
+    genie = Genie(inputs={"x": 4}, client=client)
+
+    # call the method
+    additional_input = {"y": 2}
+    assert genie.plz(instructions="add x and y", additional_inputs=additional_input) == 6
+    assert genie.plz(instructions="multiply x and y", additional_inputs=additional_input) == 8
 
 
 def test_pd_mean(client):

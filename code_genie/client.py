@@ -26,8 +26,7 @@ class GetExecutableResponse(BaseModel):
 class Client:
     TOKEN_ENV_VAR = "CODE_GENIE_TOKEN"
     URL = "https://code-scribe-pzj44qvhfa-el.a.run.app"
-    ENDPOINT_GENERIC = "get-executable/generic"
-    ENDPOINT_PANDAS = "get-executable/pandas"
+    ENDPOINT = "get-executable/generic"
 
     def __init__(self, token: Optional[str] = None):
         self._token = token or os.environ[self.TOKEN_ENV_VAR]
@@ -39,12 +38,8 @@ class Client:
         response.raise_for_status()
         return GetExecutableResponse.parse_obj(response.json())
 
-    def get_generic(self, request: GetExecutableRequest) -> Tuple[str, str]:
+    def get(self, instructions: List[str], inputs: Dict[str, str]) -> Tuple[str, str]:
+        request = GetExecutableRequest(instructions=instructions, inputs=inputs, allowed_imports=[])
         # send a request with given data
-        response = self._get_response(self.ENDPOINT_GENERIC, request)
-        return response.code, response.fn_name
-
-    def get_pandas(self, request: GetPandasExecutableRequest) -> Tuple[str, str]:
-        # send a request with given data
-        response = self._get_response(self.ENDPOINT_PANDAS, request)
+        response = self._get_response(self.ENDPOINT, request)
         return response.code, response.fn_name
