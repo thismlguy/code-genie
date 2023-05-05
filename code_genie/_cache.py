@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class _MetaValue(BaseModel):
-    filename: str
+    id: str
     fn_name: str
 
     class Config:
@@ -32,9 +32,6 @@ class _CacheManager:
 
     def __init__(self, cache_dir: Optional[str] = None):
         self.cache_dir, self.meta_path = self._check_cache_dir(cache_dir or self.DEFAULT_CACHE_DIR)
-        self._cache_meta = self._load_meta()
-        if len(self._cache_meta) > 0:
-            logger.info(f"Loaded {len(self._cache_meta)} items from cache file {self.cache_dir}")
 
     @classmethod
     def _set_cache_dir(cls, cache_dir: str):
@@ -74,8 +71,8 @@ class _CacheManager:
             meta_data: Dict[str, _MetaValue] = json.load(f, object_hook=self._json_decoder(_MetaValue))
         return meta_data
 
-    def _load_code(self, filename: str) -> str:
-        with open(os.path.join(self.cache_dir, filename), "r") as f:
+    def _load_code(self, id: str) -> str:
+        with open(self._get_filename(id), "r") as f:
             return f.read()
 
     @classmethod
@@ -84,22 +81,40 @@ class _CacheManager:
         h.update(bytes(value, "utf-8"))
         return h.hexdigest()
 
+    def _get_filename(self, id: str) -> str:
+        return os.path.join(self.cache_dir, f"{id}.py")
+
     def update(self, key: str, value: _CacheValue):
+        _cache_meta = self._load_meta()
         key_hash = self._consistent_hash(key)
-        self._cache_meta[key_hash] = value
+
+        # if key is present in, delete the file which is currently cashed
+        if key_hash in _cache_meta:
+            os.remove(self._get_filename(_cache_meta[key_hash].id))
+
+        # add new cash entry
+        _cache_meta[key_hash] = value
         # write to code file
-        with open(os.path.join(self.cache_dir, value.filename), "w") as f:
+        with open(self._get_filename(value.id), "w") as f:
             f.write(value.code)
         # update metadata
         with open(self.meta_path, "w") as f:
-            json.dump(self._cache_meta, f, indent=4, default=self._json_encoder)
+            json.dump(_cache_meta, f, indent=4, default=self._json_encoder)
 
     def get(self, key: str) -> Optional[_CacheValue]:
-        meta = self._cache_meta.get(self._consistent_hash(key), None)
+        _cache_meta = self._load_meta()
+        meta = _cache_meta.get(self._consistent_hash(key), None)
         if meta is not None:
-            code = self._load_code(meta.filename)
-            return _CacheValue(code=code, filename=meta.filename, fn_name=meta.fn_name)
+            code = self._load_code(meta.id)
+            return _CacheValue(code=code, id=meta.id, fn_name=meta.fn_name)
         return None
 
     def num_items(self):
-        return len(self._cache_meta)
+        return len(self._load_meta())
+
+    def get_all_code_segments(self) -> Dict[str, str]:
+        _cache_meta = self._load_meta()
+        code_segments = {}
+        for meta in _cache_meta.values():
+            code_segments[meta.id] = self._load_code(meta.id)
+        return code_segments

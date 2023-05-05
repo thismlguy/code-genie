@@ -1,13 +1,4 @@
-__version__ = "0.2.1-dev0"
+__version__ = "0.3.0"
 
 from code_genie._cache import _CacheManager
-
-
-def set_cache_dir(path: str):
-    """
-    Set global options for the package
-
-    Args:
-        path: path to the cache dir
-    """
-    _CacheManager._set_cache_dir(path)
+from code_genie.genie import Genie

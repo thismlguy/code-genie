@@ -51,7 +51,7 @@ notebook = [
 ]
 
 [project.urls]
-Documentation = "https://TBD"
+Documentation = "https://code-genie.readthedocs.io/en/latest/"
 Source = "https://github.com/thismlguy/code-genie"
 
 [tool.flit.sdist]
