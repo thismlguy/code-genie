@@ -69,7 +69,7 @@ class Genie:
         additional_inputs: Optional[Dict[str, Any]] = None,
         override: bool = False,
         update_base_input: bool = False,
-    ):
+    ) -> GenieResult:
         """Generate code for a new task
 
         Args:
@@ -125,7 +125,7 @@ class Genie:
     def _combine_inputs(
         self, additional_inputs: Optional[Dict[str, Any]], copy_base_input: bool = False
     ) -> Dict[str, Any]:
-        data = self.data if not copy_base_input else self.data.copy()
+        data = self.data.copy() if (copy_base_input and self.copy_data_before_use) else self.data
         return {self._base_key: data, **(additional_inputs or {})}
 
     @staticmethod
