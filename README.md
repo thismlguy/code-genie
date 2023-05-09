@@ -12,7 +12,7 @@ Latest version: 0.3.1
 ## Installation
 
 ```bash
-pip install code-genie
+pip install code_genie
 ```
 
 ## Access Token
@@ -35,19 +35,4 @@ You can use the [python-dotenv](https://github.com/theskumar/python-dotenv) pack
 ```
 from dotenv import load_dotenv
 load_dotenv("path-to-.env-file")
-```
-
-#### Pandas data processing
-
-Following is an example to get the number of missing values in each column of a dataframe.
-
-```python
-from code_genie import PandasGenie
-genie = PandasGenie(instructions=[
-    "create a new dataframe which contains the number of missing values in each column",
-    "add a column to this dataframe representing the percentage of total points which are missing",
-    "sort dataframe in descending order of number of missing items",
-    "filter out columns which have no missing values"
-    ])
-df_missing = genie(df)
 ```
