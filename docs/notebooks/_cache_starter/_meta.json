@@ -1,23 +1,269 @@
 {
-    "75bfe6ff8c5a1d4af08dadc1f9f9f57c15f2eeaad4d0a4e7019b25fb945237889c3ebb7c48f1eb51296fee54a70d0efd2eb002ed2fbb71d6adc6d522121904d4": {
-        "id": "generate_employee_dataframe_16305",
-        "fn_name": "generate_employee_dataframe"
+    "d657e1649feac2a84a9458a6f7bf402c1ec1b39546c97b9823dbd4e2597f8bfc565da6f145c4aedfa92a923c5c801886b3c4f2ea58f245616f63644c56aec5bf": {
+        "id": "count_missing_values_26226",
+        "fn_name": "count_missing_values",
+        "instructions": [
+            "find number of missing values in each column"
+        ],
+        "inputs": [
+            "df"
+        ]
     },
-    "15a4a253a8db94466423a17f9076c2d267ccb46f86d437517e97766d33e6c88e4ef88c7a8497d6a1c86417faca99453820c69a4677a07764253f9abcbd80bb7a": {
-        "id": "count_missing_values_57234",
-        "fn_name": "count_missing_values"
+    "32d962708ae6511926b10141079240861659ad3166623446a5959b56ee636e497af7c0ae30c8975168750420b2a7d6b61479acde11e5469abd0f31fbdb11238d": {
+        "id": "process_dataframe_88292",
+        "fn_name": "process_dataframe",
+        "instructions": [
+            "return df with salary and salary_currency columns dropped",
+            "rename salary_in_usd column to salary"
+        ],
+        "inputs": [
+            "df"
+        ]
     },
-    "a688a67005bdb6ac1b821ccbc428dd46e7b236342e66a868c9f9e4018d4ff7a8e39f31a7bee00fd00dd2dfcde5ac371bc3fb4eece37aaa0d5cd8a77a86bd1b2f": {
-        "id": "plot_salary_distribution_88606",
-        "fn_name": "plot_salary_distribution"
+    "11cc5a7193d4a75db1e3b02f39592a501b53f3569427c9319fce882fc9e38f33f7b720cfdb1238fe9a3bc398dff00edef97cb729d3f303249b6af8fd44e4c2e0": {
+        "id": "unique_experience_count_96626",
+        "fn_name": "unique_experience_count",
+        "instructions": [
+            "print unique value counts of experience level"
+        ],
+        "inputs": [
+            "df"
+        ]
     },
-    "d8dc0b755c8a70f0ca0dd9935ad4c6b7399b4e8a93dc78db5d2377f6958f7a123857bf05a84eefaff113e2305a01eae86d356584493755744e2beefcd6ffe675": {
-        "id": "plot_salary_by_department_20090",
-        "fn_name": "plot_salary_by_department"
+    "478bd3113f7c977d901e1fa7f1909d8731a7cb62769f500fce0c676239dc03883957db8faf72cdb0a6fa18469e9601581dbb7321bdf971b5835246849beb4b28": {
+        "id": "map_experience_level_48687",
+        "fn_name": "map_experience_level",
+        "instructions": [
+            "return a df with values replaced in experience_level column using following mapping:\n- EN: Entry-level / Junior\n- MI: Mid-level / Intermediate\n- SE: Senior-level / Expert\n- EX: Executive-level / Director.\n"
+        ],
+        "inputs": [
+            "df"
+        ]
     },
-    "3ee7804d7281f534532fbe1a2e1606fb74bac590fec9de4c0cde2f7583f081fa3d92f09583bc999a8f39807820b85a3be6e303088d24811ed825ca8fbef7a918": {
-        "id": "high_earners_26869",
-        "fn_name": "high_earners",
-        "code": "def high_earners(df):\n    high_earners_df = df[df['salary'] > 100000]\n    return high_earners_df.groupby('department').size()"
+    "29fab2c82c55d7063c80ed9155e4590f0f6a4745db8752f01f62b3aee925ffab45894d4025f07add5e5db28c1a272515e921703996384f3fcb3811878b237e7c": {
+        "id": "count_job_designations_83350",
+        "fn_name": "count_job_designations",
+        "instructions": [
+            "how many distinct kinds of job designations are there?"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "58a0f65b132862e698b9fa008243a8fc98493209cd02a206fa3bcc11cc020f4e0d696375028b8d4607d321d8fa55e8c796057a356e84fa6ee79e04d12b5826c8": {
+        "id": "top_jobs_41202",
+        "fn_name": "top_jobs",
+        "instructions": [
+            "get top 15 most frequently occuring job designations",
+            "make a bar chart of these designations along with count",
+            "rotate labels of bar chart 90 degrees",
+            "print the count on top of each bar"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "6f983e8c75316cd6f1e1bff66b969b80de113ecb0dd3dcb3b6c10b74520a0c8768709fbd5bb7b1be2aa75f63a18e7b2ac174eb1128950a7db19daab2430ea155": {
+        "id": "make_wordcloud_51022",
+        "fn_name": "make_wordcloud",
+        "instructions": [
+            "make a word cloud of job title using frequency of occurence of the job title as size of word",
+            "main words should appear horizontal"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "de990ca2009cf0080b3868c08444edc02269bb6e4c86839c69f2288f46c12b7a358b81708366cdadfa125abdc8cbca56b4256bd4d328fc2cc3cc6e89efe1f2f5": {
+        "id": "pie_chart_47446",
+        "fn_name": "pie_chart",
+        "instructions": [
+            "make a pie chart showing distribution of work year"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "1541c25d6ccad51b6ac0803f35923fa160a53f8f187ebc533fccfeff5c5fb330ca30f464beab73975c3f946b9c58bc54d87d13f3803fe642818db80836e555fd": {
+        "id": "create_boxplot_24032",
+        "fn_name": "create_boxplot",
+        "instructions": [
+            "make a boxplot of the salary"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "821044f24208d63da3077872dee1ca32d03f0943a9f477eacff019150b00b89ad4cb425040f872b7b992a65cf1379956795c2539c8b7e2933d3738b09d8c0401": {
+        "id": "remote_ratio_mapper_69067",
+        "fn_name": "remote_ratio_mapper",
+        "instructions": [
+            "return a df with values replaced in remote_ratio column using following mapping:\n- 0: No Remote Work\n- 50: Partially Remote\n- 100: Fully Remote\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "1de37cc168d53fd6533b2f650d1baba5df193df5c94a3b96c4ce11f376e352db9e82f79a1be79f391ab9ca29d3a29fb2e5ab47f20cf019cd32916483580edf16": {
+        "id": "unique_remote_ratio_counts_63145",
+        "fn_name": "unique_remote_ratio_counts",
+        "instructions": [
+            "print unique value counts of remote ratio"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "8c66a58bea11318277700422d84a6a787f9ac5187c39ab7b23d6cea2145d279209eea77c980e259ee2c888f39cafc909e9fa69160c0f790f31b7abd565c4546c": {
+        "id": "remote_work_trend_43871",
+        "fn_name": "remote_work_trend",
+        "instructions": [
+            "i want to understand how remote work has changed over work_years. make a chart which i can use for this"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "60ac1f4d918935b055d60d1a43e29eb8b973cad4c9e1ccc11d49e6f794407dde018dab018e1d94ff85aa5ef6b57ef4fabbb6096439ccab75ec0b1d911b584d29": {
+        "id": "remote_ratio_by_work_year_62964",
+        "fn_name": "remote_ratio_by_work_year",
+        "instructions": [
+            "i want to understand how remote_ratio has changed over work_years. make a chart which i can use for this"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "75778429049f01d7409109d6b909fa00c1f77c0f4ebc1857c6e7d6c09d0a44c765cdd4f1f77a6048c22e844dedc6da29fe8b6eb8319fc65ffd143a6aa9c4dd3f": {
+        "id": "plot_remote_by_work_years_32302",
+        "fn_name": "plot_remote_by_work_years",
+        "instructions": [
+            "make a bar chart of counts of remote_ratio grouped by work_years."
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "e72f207eee7c4ed8a8d17d8460b4006087dce6a38f06fa7dc899a11f4e709b23620855d250d1176797b711bdbe4f251db524bd55129eae022b495e102798ed26": {
+        "id": "remote_ratio_by_work_years_96078",
+        "fn_name": "remote_ratio_by_work_years",
+        "instructions": [
+            "make a bar chart of percentage counts of remote_ratio grouped by work_years."
+        ],
+        "inputs": [
+            "df"
+        ],
+        "code": "import matplotlib.pyplot as plt\nimport pandas as pd\n\ndef remote_ratio_by_work_years(df):\n    \"\"\"\n    This function creates a bar chart of percentage counts of remote_ratio grouped by work_years.\n\n    Parameters:\n    df (pd.DataFrame): pandas dataframe with columns 'work_year', 'experience_level', 'employment_type',\n                        'job_title', 'salary', 'employee_residence', 'remote_ratio', 'company_location', \n                        'company_size'.\n                        \n    Returns:\n    None (displays a bar chart)\n    \"\"\"\n    # Group by work year and remote ratio to get counts\n    counts = df.groupby(['work_year', 'remote_ratio']).size().reset_index(name='count')\n    \n    # Group by work year to get total count for each year\n    total_counts = counts.groupby('work_year').agg({'count': 'sum'}).reset_index()\n    total_counts.rename(columns={'count': 'total_count'}, inplace=True)\n    \n    # Merge counts with total counts\n    counts = counts.merge(total_counts, on=['work_year'])\n    \n    # Calculate percentage counts\n    counts['percentage_count'] = counts['count'] / counts['total_count'] * 100\n    \n    # Pivot the table to create bar chart\n    counts_pivot = counts.pivot(index='work_year', columns='remote_ratio', values='percentage_count')\n    \n    # Create the bar chart\n    ax = counts_pivot.plot(kind='bar', stacked=True, figsize=(10, 6))\n    ax.set_xlabel('Work Years')\n    ax.set_ylabel('Percentage Count')\n    ax.set_title('Remote Ratio by Work Years')\n    plt.show()\n"
+    },
+    "e14797bca568bb8ceda7871549336f37ea5eb1867f7290352071ba9bfa17977becc59f6755f27cc11592abdf109568bd165b62f94de9128f16b427c5fcdbf0ee": {
+        "id": "emp_type_experience_chart_48452",
+        "fn_name": "emp_type_experience_chart",
+        "instructions": [
+            "for each employment_type, make a bar chart with the counts of experience_level"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "33e197f3649789d439a22f913f15817cdc59b59fa45c6e6b329c3896f36ae8811e320c76fca00a76c7cf21921796c399123bcc3f608506867b061d3dfc6abe3a": {
+        "id": "plot_employment_type_experience_20555",
+        "fn_name": "plot_employment_type_experience",
+        "instructions": [
+            "make a grid of charts, one for each employment_type; ",
+            "each chart should have a bar plot with the counts of experience_level",
+            "rotate labels of all charts by 45 degress"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "2077dd5a6035e2e18ad5bcd06aa864f21fa3ff6c99aab85f4e117b612f12664fbead432a9129bc84f959b31aec10dcf456c2ced5a40b234516a7cfb8ccb0f570": {
+        "id": "create_plot_93407",
+        "fn_name": "create_plot",
+        "instructions": [
+            "make a 2x2 grid of charts, one for each employment_type; ",
+            "each chart should have a bar plot with the counts of experience_level",
+            "rotate labels of all charts by 45 degress",
+            "all plots should in a single row"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "e4498ada8cdb342c2f087ee785c0594a7029490b0117125910f1136773c86d6aba3f3ac45f4fd612141befa056094ba54d2866427dfd27235c3b47e9bf4c89f8": {
+        "id": "plot_emp_type_experience_level_31165",
+        "fn_name": "plot_emp_type_experience_level",
+        "instructions": [
+            "make a grid of charts, one for each employment_type; ",
+            "each chart should have a bar plot with the counts of experience_level",
+            "rotate labels of all charts by 45 degress",
+            "all plots should in a single row"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "5f65134912624affa6c8130b06f8d493134159e4d02164fbe09331ed3c332798973e9fec45952681df600aeb52903219d874c74db77b65e69f395027a09c63cb": {
+        "id": "plot_salary_distribution_37027",
+        "fn_name": "plot_salary_distribution",
+        "instructions": [
+            "plot the distribution of salary per work year"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "c22ce55124602fd220e3f3347aaaf399c41bf520649b53f2a076c3a5f9714be0f6c7567f434a577a39e2d6a4b6741dad4c55b6d2b9ff9ea5014e04a7382d37fb": {
+        "id": "plot_salary_per_work_year_99923",
+        "fn_name": "plot_salary_per_work_year",
+        "instructions": [
+            "plot the distribution of salary per work year, one line per year"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "b1f260d37561bdf59ed780aac7e109a9983c6142a7bbc36f87c0a0f5d3a46b58969ae2eeea8441d3eeead5f2cd62861926272187507d633c8e553a13428f844e": {
+        "id": "plot_salary_distribution_per_work_year_39260",
+        "fn_name": "plot_salary_distribution_per_work_year",
+        "instructions": [
+            "plot the distribution of salary per work year using line not histogram"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "14e39babb91b07123fc6661cba7ac2a76606ad58196d619d2b1113d09fbf6a2f7b86a59665446a401690c1db57ddd86213bc8ae4aff77acac98fffd807f3f04d": {
+        "id": "plot_salary_distribution_98202",
+        "fn_name": "plot_salary_distribution",
+        "instructions": [
+            "plot the distribution of salary per work year",
+            "use lines to represent distribution"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "d2370af4130ff2e71c69d7fc33b7aeccba3f440c49e292033e88c06721a2b05eb2c4f093a8c2516a9711e0b530ffbf0ef78717075f4b9dc96b4b6c45f4cbd77c": {
+        "id": "plot_salary_distribution_21299",
+        "fn_name": "plot_salary_distribution",
+        "instructions": [
+            "plot the distribution of salary, grouped by work year",
+            "use lines to represent distribution"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "3fa32c63a97f0d8073faa1bc5580b3e69995f6b34621d6ca719fdb3eb6162e6e43afeb5d40d183a2f04a5db08e7dbaab050f77ff988ca27cdbfc0c867fce501b": {
+        "id": "plot_salary_distribution_51861",
+        "fn_name": "plot_salary_distribution",
+        "instructions": [
+            "plot the distribution of salary, grouped by work_year",
+            "use lines to represent distribution"
+        ],
+        "inputs": [
+            "df"
+        ]
     }
 }

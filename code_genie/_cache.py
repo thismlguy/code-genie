@@ -92,7 +92,9 @@ class _CacheManager:
 
         # if key is present in, delete the file which is currently cashed
         if key_hash in _cache_meta:
-            os.remove(self._get_filename(_cache_meta[key_hash].id))
+            filename = self._get_filename(_cache_meta[key_hash].id)
+            if os.path.exists(filename):
+                os.remove(filename)
 
         # add new cash entry
         _cache_meta[key_hash] = value
@@ -107,9 +109,12 @@ class _CacheManager:
         _cache_meta = self._load_meta()
         meta = _cache_meta.get(self._consistent_hash(key), None)
         if meta is not None:
-            code = self._load_code(meta.id)
-            return _CacheValue(code=code, id=meta.id, fn_name=meta.fn_name, instructions=meta.instructions,
-                               inputs=meta.inputs)
+            try:
+                code = self._load_code(meta.id)
+                return _CacheValue(code=code, id=meta.id, fn_name=meta.fn_name, instructions=meta.instructions,
+                                   inputs=meta.inputs)
+            except FileNotFoundError:
+                return None
         return None
 
     def num_items(self):

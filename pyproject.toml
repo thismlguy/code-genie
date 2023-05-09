@@ -48,6 +48,8 @@ docs = [
 notebook = [
     "jupyterlab>=3.1,<4",
     "ipykernel>=6.0,<7",
+    "opendatasets>=0.1.22,<0.2",
+    "wordcloud>=1.8,<2",
 ]
 
 [project.urls]
