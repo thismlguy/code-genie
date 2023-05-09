@@ -23,20 +23,18 @@ extensions = ['sphinx.ext.napoleon',
               'sphinx.ext.viewcode',
               'sphinx.ext.autosummary',
               "nbsphinx",
-              "sphinx_gallery.load_style"]
+              "sphinx_gallery.load_style",
+              "sphinxcontrib.autodoc_pydantic"]
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-autodoc_default_options = {
-    'members': True,
-    'member-order': 'bysource',
-    'special-members': '__init__',
-    'exclude-members': '__weakref__',
-    'inherited-members': True,
-}
 
 # Napoleon settings
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
+
+# autodoc-pydantic settings
+autodoc_pydantic_model_show_json = False
+autodoc_pydantic_model_show_config = False
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

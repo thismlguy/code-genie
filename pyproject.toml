@@ -43,7 +43,8 @@ docs = [
     "autodocsumm",
     "sphinx_rtd_theme",
     "nbsphinx",
-    "sphinx_gallery"
+    "sphinx_gallery",
+    "autodoc-pydantic"
 ]
 notebook = [
     "jupyterlab>=3.1,<4",
