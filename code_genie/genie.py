@@ -57,8 +57,10 @@ class Genie:
         if copy_data_before_use:
             # check data should have a copy method
             if not hasattr(data, "copy"):
-                raise ValueError("data should have a copy method implemented if copy_data_before_use is True",
-                                 "Set it to False if you want to continue using the genie")
+                raise ValueError(
+                    "data should have a copy method implemented if copy_data_before_use is True",
+                    "Set it to False if you want to continue using the genie",
+                )
         self._client = client or Client()
 
     def plz(
@@ -104,8 +106,10 @@ class Genie:
             inputs = self._combine_inputs(additional_inputs)
             code, fn_name = self._get_code(instructions, inputs)
             id = self._generate_id(fn_name)
-            self._cache.update(cache_key, _CacheValue(code=code, fn_name=fn_name, id=id, instructions=instructions,
-                                                      inputs=list(inputs.keys())))
+            self._cache.update(
+                cache_key,
+                _CacheValue(code=code, fn_name=fn_name, id=id, instructions=instructions, inputs=list(inputs.keys())),
+            )
             print(f"Genie cached with id: {id}")
 
         # create executor and return results
@@ -118,8 +122,9 @@ class Genie:
             self.data = result
         return GenieResult(id=id, code=code, cache_dir=self._cache.cache_dir, result=result)
 
-    def _combine_inputs(self, additional_inputs: Optional[Dict[str, Any]],
-                        copy_base_input: bool = False) -> Dict[str, Any]:
+    def _combine_inputs(
+        self, additional_inputs: Optional[Dict[str, Any]], copy_base_input: bool = False
+    ) -> Dict[str, Any]:
         data = self.data if not copy_base_input else self.data.copy()
         return {self._base_key: data, **(additional_inputs or {})}
 
@@ -130,9 +135,7 @@ class Genie:
         return f"{type(x)}"
 
     def _get_code(self, instructions: List[str], inputs: Dict[str, Any]) -> Tuple[str, str]:
-        input_str = {
-            key: self._create_input_str(value) for key, value in inputs.items()
-        }
+        input_str = {key: self._create_input_str(value) for key, value in inputs.items()}
         return self._client.get(instructions=instructions, inputs=input_str)
 
     @classmethod
