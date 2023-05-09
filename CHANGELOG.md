@@ -6,6 +6,7 @@
     * Accept a single base input during init instead of a dictionary
     * Add support for copying the input before running executor so that the input is not modified
     * Fix bug where code will throw an error is a cached file is removed by the user
+    * Update starter notebook with kaggle data science salaries example
 
 ## 0.3.0
 
