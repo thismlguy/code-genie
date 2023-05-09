@@ -43,11 +43,14 @@ docs = [
     "autodocsumm",
     "sphinx_rtd_theme",
     "nbsphinx",
-    "sphinx_gallery"
+    "sphinx_gallery",
+    "autodoc-pydantic"
 ]
 notebook = [
     "jupyterlab>=3.1,<4",
     "ipykernel>=6.0,<7",
+    "opendatasets>=0.1.22,<0.2",
+    "wordcloud>=1.8,<2",
 ]
 
 [project.urls]
