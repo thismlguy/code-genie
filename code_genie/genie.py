@@ -23,6 +23,10 @@ class GenieResult(BaseModel):
     result: Any = None
     """The result of the execution; None if no result was returned"""
 
+    class Config:
+        # always exclude result from json export
+        fields = {"result": {"exclude": True}}
+
 
 class Genie:
     _hash_sep = "::"

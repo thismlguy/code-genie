@@ -1,0 +1,25 @@
+{
+    "a2c1de9de0978bc576ba3b718e23a736cae8d91a3f5da5ea1d3e803f582c0368fde76b3992a962c097fb23017fbe1344869e72c89ef9123997e6054412c6992c": {
+        "id": "mean_groupby_multiply_75442",
+        "fn_name": "mean_groupby_multiply",
+        "instructions": [
+            "create a df with mean values of a grouped by b, then multiply the mean values by the multiplier input"
+        ],
+        "inputs": [
+            "df",
+            "multiplier"
+        ]
+    },
+    "34251dee223eda1944ad17c8a1f15241bd2e7279a8b7c6acb18e94dbe8df5dc4ea63f7c5e2f22f782007e389ae563fbcecb8c321d08d015a7b171a23d0e6943f": {
+        "id": "calculate_mean_18099",
+        "fn_name": "calculate_mean",
+        "instructions": [
+            "create a df with mean values of x grouped by y, then multiply the mean values by the multiplier input"
+        ],
+        "inputs": [
+            "df",
+            "multiplier"
+        ],
+        "code": "import pandas as pd\n\ndef calculate_mean(df: pd.DataFrame, multiplier: int) -> pd.DataFrame:\n    mean_df = df.groupby('y').mean()\n    return mean_df.mul(multiplier)\n"
+    }
+}
