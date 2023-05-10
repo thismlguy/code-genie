@@ -9,14 +9,19 @@ from code_genie.io.base import GenieSink, GenieSource
 class DataFrameToCsvSink(GenieSink):
     path: StringArg
     index: BoolArg = BoolArg(name="export-pd-index", default_value=False)
+    reset_index: BoolArg = BoolArg(name="reset-pd-index", default_value=True)
 
-    def put(self, data: pd.DataFrame):
-        data.to_csv(self.path, index=self.index.get())
+    def put(self, data: pd.DataFrame, **kwargs):
+        if self.resolve_arg(self.reset_index, **kwargs):
+            data = data.reset_index()
+        data.to_csv(self.resolve_arg(self.path, **kwargs), index=self.resolve_arg(self.index, **kwargs))
 
 
 class CsvToDataFrameSource(GenieSource):
     path: StringArg
     kwargs: Dict[str, GenieArgument] = {}
 
-    def get(self):
-        return pd.read_csv(self.path, **{k: v.get() for k, v in self.kwargs.items()})
+    def get(self, **kwargs):
+        return pd.read_csv(
+            self.resolve_arg(self.path, **kwargs), **{k: self.resolve_arg(v, **kwargs) for k, v in self.kwargs.items()}
+        )

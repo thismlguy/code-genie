@@ -1,5 +1,6 @@
 import random
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+import re
+from typing import Any, Callable, Dict, List, Optional, Union
 
 import pandas as pd
 from pydantic import BaseModel
@@ -26,6 +27,7 @@ class GenieResult(BaseModel):
     class Config:
         # always exclude result from json export
         fields = {"result": {"exclude": True}}
+        frozen = True
 
 
 class Genie:
@@ -117,14 +119,25 @@ class Genie:
             print(f"Genie cached with id: {id}")
 
         # create executor and return results
-        executor = self._extract_executable(code, fn_name)
-        result = executor(**(self._combine_inputs(additional_inputs, copy_base_input=True)))
+        result = self.run(code, additional_inputs)
 
         if update_base_input:
             if result is None:
                 raise ValueError(f"result of genie is None, cannot update base input")
             self.data = result
         return GenieResult(id=id, code=code, cache_dir=self._cache.cache_dir, result=result)
+
+    def run(self, code: str, additional_inputs: Dict[str, Any]):
+        executor = self._extract_executable(code)
+        return executor(**self._combine_inputs(additional_inputs, copy_base_input=True))
+
+    @classmethod
+    def _extract_fn_name(cls, code: str):
+        # find function name from code block and substitute with function_name
+        match = re.search("def\s+(.*)\(.*\).*:", code)
+        if match is None:
+            raise RuntimeError(f"Failed to extract function from code block: {code}")
+        return match.group(1)
 
     def _combine_inputs(
         self, additional_inputs: Optional[Dict[str, Any]], copy_base_input: bool = False
@@ -138,13 +151,14 @@ class Genie:
             return f"pandas dataframes with columns: {x.columns}"
         return f"{type(x)}"
 
-    def _get_code(self, instructions: List[str], inputs: Dict[str, Any]) -> Tuple[str, str]:
+    def _get_code(self, instructions: List[str], inputs: Dict[str, Any]) -> str:
         input_str = {key: self._create_input_str(value) for key, value in inputs.items()}
         return self._client.get(instructions=instructions, inputs=input_str)
 
     @classmethod
-    def _extract_executable(cls, code: str, fn_name: str) -> Callable:
+    def _extract_executable(cls, code: str) -> Callable:
         # define function in memory
+        fn_name = cls._extract_fn_name(code)
         mem = {}
         exec(code, mem)
         return mem[fn_name]

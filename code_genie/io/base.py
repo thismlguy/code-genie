@@ -8,13 +8,19 @@ from code_genie.io.argument import GenieArgument
 ARG = TypeVar("ARG", bound=GenieArgument)
 
 
-class GenieSource(ABC, BaseModel):
+class _Base(BaseModel):
+    @classmethod
+    def resolve_arg(cls, arg: GenieArgument, **kwargs):
+        return arg.get(kwargs.get(arg.name))
+
+
+class GenieSource(ABC, _Base):
     @abstractmethod
-    def get(self):
+    def get(self, **kwargs):
         raise NotImplemented
 
 
-class GenieSink(ABC, BaseModel):
+class GenieSink(ABC, _Base):
     @abstractmethod
-    def put(self, data: Any):
+    def put(self, data: Any, **kwargs):
         ...

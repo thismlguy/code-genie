@@ -12,9 +12,6 @@ class GenieArgument(ABC, BaseModel):
     name: str
     """Name of the argument, should only contain numbers, letters, dash and underscores; should start with a letter"""
 
-    _value: Optional[Any] = None
-    """Value of the argument; this will be set automatically by the pipeline object while running."""
-
     default_value: Optional[Any] = None  # set custom validator in the subclass
     """Default value of the argument if not provided"""
 
@@ -32,14 +29,14 @@ class GenieArgument(ABC, BaseModel):
             raise ValueError(f"name must start with a letter, found: {v}")
         return v
 
-    def get(self):
+    def get(self, value: Optional[Any] = None):
         """get the value of the argument using the following precedence:
         1. value set by the pipeline object
         2. env_var
         3. default_value
         """
-        if self._value is not None:
-            return self._value
+        if value is not None:
+            return value
         if self.env_var is not None:
             value = os.getenv(self.env_var)
             if value is None:

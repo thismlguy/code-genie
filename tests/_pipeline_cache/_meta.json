@@ -1,25 +1,24 @@
 {
-    "a2c1de9de0978bc576ba3b718e23a736cae8d91a3f5da5ea1d3e803f582c0368fde76b3992a962c097fb23017fbe1344869e72c89ef9123997e6054412c6992c": {
-        "id": "mean_groupby_multiply_75442",
-        "fn_name": "mean_groupby_multiply",
+    "b7623d55f85772175d00129b51334ee1ef3c202664cb2903cf026cbfb25860b6639c043f1756b0332eeb91e5156966cf3802ed96426f207f515e2077e486ef85": {
+        "id": "create_means_df_73453",
+        "fn_name": "create_means_df",
         "instructions": [
-            "create a df with mean values of a grouped by b, then multiply the mean values by the multiplier input"
+            "create a df with mean values of x grouped by y"
         ],
         "inputs": [
-            "df",
-            "multiplier"
+            "df"
         ]
     },
-    "34251dee223eda1944ad17c8a1f15241bd2e7279a8b7c6acb18e94dbe8df5dc4ea63f7c5e2f22f782007e389ae563fbcecb8c321d08d015a7b171a23d0e6943f": {
-        "id": "calculate_mean_18099",
-        "fn_name": "calculate_mean",
+    "9f6bcf205842b4c6d448af9417d26be53c7bd570712c1a18c5089e0a2cf0b50b356e1a5d3c6f951060dcb38d9ee64380176ac869bb48ee6540b0d9d6ada1714a": {
+        "id": "multiply_df_98613",
+        "fn_name": "multiply_df",
         "instructions": [
-            "create a df with mean values of x grouped by y, then multiply the mean values by the multiplier input"
+            "multiply values of x by multiplier"
         ],
         "inputs": [
             "df",
             "multiplier"
         ],
-        "code": "import pandas as pd\n\ndef calculate_mean(df: pd.DataFrame, multiplier: int) -> pd.DataFrame:\n    mean_df = df.groupby('y').mean()\n    return mean_df.mul(multiplier)\n"
+        "code": "import pandas as pd\n\ndef multiply_df(df: pd.DataFrame, multiplier: int) -> pd.DataFrame:\n    df['x'] = df['x'] * multiplier\n    return df\n"
     }
 }
