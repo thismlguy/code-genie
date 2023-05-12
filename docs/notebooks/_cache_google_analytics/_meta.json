@@ -1,0 +1,264 @@
+{
+    "58bfd651f11452acdcfdd7b79dc79ef56bb8515f8977dbc04ec40e1ace4bd94f36a6dfa03b39c0afbd2419b91c453c11cb556ddfc180cda9b6ad829753b0ea41": {
+        "id": "expand_hits_67623",
+        "instructions": [
+            "each value in hits column contains a list of dictionaries. create a new dataframe with each value in this list is a separate row",
+            "copy the value of column totals for each value of hit in the expanded dataframe"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "9b7eaf3384ba400679156d5b249a1a95ef1b763913b385e4a0fbbeba267056bee97648f1fa3b1eab729f7e382c7d411b830b03170c8ad112bba0b178baeb94f6": {
+        "id": "flatten_hits_column_14418",
+        "instructions": [
+            "each value in hits column contains a list of dictionaries. create a new dataframe with each value in this list is a separate row",
+            "the value of column totals in original df should be carried over to the new df "
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "0794f9933b8fed3918ddd5741c7c6264f5ed8f60d7cf76fc8a0e580172e125d4d043f44d30fa4ac346b6023bfc84e4728a3d26906fd7f4a05c36bbe41323f46e": {
+        "id": "expand_hits_40109",
+        "instructions": [
+            "\neach value in hits column contains a list. create a new dataframe where a separate row exists for each value. \ncopy the totals columns to the new df, keep the same value for each item in the list\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "da7ca84b92ee7d154e2530372f7a4daaacfceb23db4f52752462f21a324865824467d41fd0f38958157cc7ba05d284790113016f8add67f22dac131aca4acbde": {
+        "id": "separate_hits_70651",
+        "instructions": [
+            "\neach value in hits column contains a list. create a new dataframe where a separate row exists for each value. \ncopy the totals columns to the new df, keep the same value for each item in the list. drop all other columns except hits and totals.\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "4a430a58b81a67d299f5404b88f0cb22fb0b8fc7de1fc0349eafb73282a6a8e3d5ab80f8519a17dc9178446031d4e64386f11fa5e9b1a6c1084c641b0fe415f0": {
+        "id": "extract_page_path_78866",
+        "instructions": [
+            "\neach value of hits is a dictionary with page as a key. the value of page is also a dictionary with pagePath as a key. \nextract pagePath into a new column called page_path\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "3c4d23c79f0cd9e720c703ecf2d084502c1eb437f63676f12152e3715a4918deb8e31f54922e74d1515ed8cb7fefe2fa5338db38b75b28a5ecbdd119ce4fc10f": {
+        "id": "extract_hit_type_49083",
+        "instructions": [
+            "\neach value of hits is a dictionary with type as a key. extract type into a new column called hit_type\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "e6ff856025021afde747d6795b63262c01258388a75da5d1b75d25314741ec3b9315ee28afad55053497d74754045ef03336fdd1cf34f7d4066cad51a33dc347": {
+        "id": "extract_hit_number_77980",
+        "instructions": [
+            "\neach value of hits is a dictionary with hitNumber as a key. extract type into a new column called hit_number\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "7a9d00621cb8ef69d92cd4bfcefb2b50d96e6122d665d25013fd5ed32220627a6d39491de0b7ef5368c1a976f3f04d4283566254be7a64e36f52c54fc9786a30": {
+        "id": "extract_action_type_24423",
+        "instructions": [
+            "\neach value of hits is a dictionary with eCommerceAction as a key. the value of eCommerceAction is also a dictionary with action_type as a key. \nextract action_type into a new column called action_type\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "4c7c6942bb41fe67bebd51a4d9f3983a302e94c627602931a34047b90ec57580d11e37e687055dd2b3c100f26bdfb5674c03ea432d642f9c923cf5ac8eed8bcf": {
+        "id": "extract_action_type_93153",
+        "instructions": [
+            "\neach value of hits column is a dictionary with eCommerceAction as a key. the value of eCommerceAction is also a dictionary with action_type as a key. \nextract action_type into a new column called action_type\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "f9c491d917e6734b0374408ab236e9eb14d051abf1858be2e416e29d13207f98b70214cf983bc5883852d80815d2d05c514dc1cd867fe6e46feedcc13fef7450": {
+        "id": "run_17076",
+        "instructions": [
+            "\ndef run(df):\n    df[\"hit_type\"] = df[\"hits\"].apply(lambda x: x[\"type\"])\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "022f79575a9158730d7297c195130402694831886dcf199c4796a6fbb4d799ae78b9d9c7b33d10a008074397294fe4869b72b079bcb709570f79b3a617f48074": {
+        "id": "run_25396",
+        "instructions": [
+            "\ndef run(df):\n    df[\"hit_type\"] = df[\"hits\"].apply(lambda x: x[\"type\"])\n    return df\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "51440f4d0cd2596f07cf1d2ce17681d2ed6a5017fdc91ec1d88e7dc6a44da99af9dc9f346e9ab9e161a5d36d7473479dcd1004536e72f2c40303db1e3828006d": {
+        "id": "run_75505",
+        "instructions": [
+            "\ndef run(df):\n    df[\"action_type\"] = df[\"hits\"].apply(lambda x: x[\"eCommerceAction\"][\"action_type\"]\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "17b9ed65b096960e14a0cd3cf9776f1a823c9dc7d9f088e4f5d487e5bc254ac1c005270f22ddd0d369c9f777c8c50584a2b4daefa907f25865721425427ce428": {
+        "id": "run_93620",
+        "instructions": [
+            "\ndef run(df):\n    df[\"action_type\"] = df[\"hits\"].apply(lambda x: x[\"eCommerceAction\"][\"action_type\"])\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "a63d8010072401749dcf5621d84a59ff1cb8b6fc5fc1a7666ecfd806af7d4338508371139393fa084461df40c60edaecb1c75ca57ff53252e25aceee95bc66e1": {
+        "id": "run_56055",
+        "instructions": [
+            "\ndef run(df):\n    df[\"action_type\"] = df[\"hits\"].apply(lambda x: x[\"eCommerceAction\"][\"action_type\"])\n    return df\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "33d1b655f218a5e2776abd450aee0200b7708b87c1adbe34c476caf063d06fd14164ab0ce64e8b3c55f7e96979ef0d088033dc66b570067204141628ed022f35": {
+        "id": "add_bounces_column_93508",
+        "instructions": [
+            "\neach value of totals is a dictionary. create a new boolean column called bounces which is True if the key bounces in totals has a value of 1\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "085fd73a96ed33d14a0bbdedf34de2ee9f2f843fdd83abcedb45c42a215d00ed9f28c42f0244145ab0c403534b613c0e2081c487867c65f34cbd5b542ec11254": {
+        "id": "calculate_bounce_rate_91094",
+        "instructions": [
+            "aggregate data for every page_path and create 2 columns:\nviews: total number of rows\nbounce_rate: fraction of rows where bounces is True"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "6a282d3ad161ee943edf5255a9ab9f9f43fab51ff24fef0f7de0c25173cda7798698fa97f30a08df3128440b8b738bb16fae852f60823dde5c0168d20f50bf54": {
+        "id": "page_path_stats_15703",
+        "instructions": [
+            "aggregate data for every page_path and create 2 columns:\nviews: total number of rows\nbounce_rate: fraction of rows where bounces is True\nsort the data by number of views descending\n"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "d0c6b0f149759f1345e236b559d252589e6ce5026c4452f9214f04ce720d406fd61041ea9d93af0a861aaa32ff5046b076603a1f0e845fd8f422f9fa47e19022": {
+        "id": "aggregate_data_35341",
+        "instructions": [
+            "aggregate data for every page_path and create 2 columns:\nviews: total number of rows\nbounce_rate: fraction of rows where bounces is True\n",
+            "sort the data by number of views descending"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "a065829650054982563516e6a3f4331300442ae6f90d762dbc58b8ca3f48ace5f3b45fd17db8b46e05e069b2f3fe172d10627ad7f51612b78df1c1b38cc3a7e8": {
+        "id": "create_aggregate_columns_41508",
+        "instructions": [
+            "for every value of page_path, create 2 aggregate columns:\nviews: total number of rows\nbounce_rate: fraction of rows where bounces is True\n",
+            "sort the data by views descending"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "57d08f2d4dabc4df5278806d2aea8c1a779b2f0dea135dc02c3cf9fa195b99b92085d2c5bee14fa1c0261aed80e1f2559a18fc7dc5867a92141316cfd2f58566": {
+        "id": "page_performance_85649",
+        "instructions": [
+            "filter data for hit_number = 1",
+            "for every value of page_path, create 2 aggregate columns:\nviews: total number of rows\nbounce_rate: fraction of rows where bounces is True\n",
+            "sort the data by views descending"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "b634d20e16a904585a5726b15d1a0e0003cd5dc7e8010168abbe980e274d9d77ec904237970652d83b38e43f43afee16e9309c546403e6f508bdd0980cc4a4a9": {
+        "id": "page_views_bounce_rate_54767",
+        "instructions": [
+            "filter data for hit_number as 1 and hit_type as PAGE",
+            "for every value of page_path, create 2 aggregate columns:\nviews: total number of rows\nbounce_rate: fraction of rows where bounces is True\n",
+            "sort the data by views descending"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "bdf24539e5cced12635cf1211a32d646aaf958969353912a3486c5dab69d6d4080acf5d2d1f89939959a4cd601cf14cfdb4a7a6f3cf2b3b85a2abd129d1873cd": {
+        "id": "filter_and_group_30171",
+        "instructions": [
+            "filter data for hit_number as 1 and hit_type as PAGE",
+            "group data by page_path, create 2 aggregate columns:\nviews: total number of rows in the group\nbounce_rate: fraction of rows in the group where bounces is True\n",
+            "sort the data by views descending"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "2cc8d6ae8b1c05378bc3a4218f7cb401d891e34759c77e622f66b0d8328b32b90b362fad193fe8e45ddf4583328b2430ac6b438ca7f966d0ae4f487fe87db743": {
+        "id": "get_page_bounce_rate_81411",
+        "instructions": [
+            "filter data for hit_number as 1 and hit_type as PAGE",
+            "group data by page_path, create 2 aggregate columns:\nviews: total number of rows in the group\nbounce_rate: fraction of rows in the group where bounces column is True\n",
+            "sort the data by views descending"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "8f3f005c07cb842820b77f8796e42de005a0bdf24184774e9cf852ea4a844a86890c0e2737affa8bfeaef2fcae88c610313f596f91de5f0c6002ccf6cf3ad7aa": {
+        "id": "aggregate_data_92888",
+        "instructions": [
+            "filter data for hit_type as PAGE",
+            "group data by page_path, create 2 aggregate columns:\nviews: total number of rows in the group\nexit_rate: fraction of rows in the group where bounces column is True\n",
+            "sort the data by views descending"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "1ec4094f8cb64070365f7d008d21fe77d948d1c3cea2817cd73bfb0338274292e003e506f4c5accbc8a9b355576fea84eccb7e0fa4bc26eb3db5b1e2c789e3d8": {
+        "id": "process_data_68683",
+        "instructions": [
+            "group data by action_type and count number of rows in each group",
+            "replace the action_type values as:\n    1: Click on product list page\n    2: Product details page\n    5: Checkout\n    6: Purchase Complete\n    ",
+            "drop action_types other than the ones we replaced"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "8d18225af4123ccdd71c8ffc58d9ab74846e86b621adb12a9796853fa958ac9a0ab75236b838fb33eb4f9781f07bd9ea4740c613aa2b6a18c675975abb4d35d0": {
+        "id": "run_99489",
+        "instructions": [
+            "\ndef run(df):\n    df[\"action_type\"] = df[\"hits\"].apply(lambda x: int(x[\"eCommerceAction\"][\"action_type\"]))\n    return df\n"
+        ],
+        "inputs": [
+            "df"
+        ],
+        "code": "\ndef run(df):\n    df[\"action_type\"] = df[\"hits\"].apply(lambda x: int(x[\"eCommerceAction\"][\"action_type\"]))\n    return df\n"
+    },
+    "d28ae0e0a21ee8e25c36fe646a26fc0bac28f23a5e8b50647f4de178829b6f5247e58beb013b16937e99a99a5740a9572c2943b8d779ef869866a81bf6c9d5ac": {
+        "id": "group_action_type_27490",
+        "instructions": [
+            "group data by action_type and count number of rows in each group",
+            "remove action_type other than 1, 2, 5, 6",
+            "replace the action_type values as:\n    1: Click on product list page\n    2: Product details page\n    5: Checkout\n    6: Purchase Complete\n    "
+        ],
+        "inputs": [
+            "df"
+        ]
+    }
+}

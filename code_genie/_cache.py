@@ -12,7 +12,6 @@ logger = logging.getLogger(__name__)
 
 class _MetaValue(BaseModel):
     id: str
-    fn_name: str
     instructions: List[str]
     inputs: List[str]
 
@@ -111,9 +110,7 @@ class _CacheManager:
         if meta is not None:
             try:
                 code = self._load_code(meta.id)
-                return _CacheValue(
-                    code=code, id=meta.id, fn_name=meta.fn_name, instructions=meta.instructions, inputs=meta.inputs
-                )
+                return _CacheValue(code=code, id=meta.id, instructions=meta.instructions, inputs=meta.inputs)
             except FileNotFoundError:
                 return None
         return None

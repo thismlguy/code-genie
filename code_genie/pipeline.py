@@ -1,13 +1,21 @@
 import json
 import os
+import time
 from typing import Any, Dict, List, Optional, TypeVar
 
 from pydantic import BaseModel, root_validator, validator
 
 from code_genie.genie import Genie, GenieResult
-from code_genie.io import BoolArg, CsvToDataFrameSource, DataFrameToCsvSink, IntArg, StringArg
+from code_genie.io import (
+    BigQueryToDataframeSource,
+    BoolArg,
+    CsvToDataFrameSource,
+    DataFrameToCsvSink,
+    IntArg,
+    StringArg,
+)
 
-Source = TypeVar("Source", bound=CsvToDataFrameSource)
+Source = TypeVar("Source", CsvToDataFrameSource, BigQueryToDataframeSource)
 Sink = TypeVar("Sink", bound=DataFrameToCsvSink)
 Argument = TypeVar("Argument", StringArg, IntArg, BoolArg)
 
@@ -33,7 +41,7 @@ class PipelineStep(BaseModel):
     # validate either one of base_input_source or base_input_genie should be set
     @root_validator()
     def _validate_base_input(cls, values):
-        if values.get("base_input_source") is None and values.get("base_input_genie") is None:
+        if (values.get("base_input_source") is None) and (values.get("base_input_genie") is None):
             raise ValueError("Either base_input_source or base_input_genie should be set")
         return values
 
@@ -92,6 +100,9 @@ class GeniePipeline(BaseModel):
         """Run the pipeline"""
         cached_genie_results: Dict[str, GenieResult] = {}
         for i, step in enumerate(self.steps):
+            print(f"Running step {i+1}: {step.genie_result.id}")
+            # initialize timer
+            start_time = time.time()
             step_id = step.genie_result.id
             # get the base input
             if step.base_input_source is not None:
@@ -120,3 +131,5 @@ class GeniePipeline(BaseModel):
             # write the output
             if step.sink is not None:
                 step.sink.put(genie_result, **args)
+            end_time = time.time()
+            print(f"\tCompleted in {end_time - start_time:.1f} seconds")

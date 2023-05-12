@@ -3,14 +3,17 @@ import warnings
 from abc import ABC
 from typing import Any, Optional
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, root_validator, validator
 
 
 class GenieArgument(ABC, BaseModel):
     """Define an argument to the pipeline. This would be used to create the deployment setup"""
 
-    name: str
-    """Name of the argument, should only contain numbers, letters, dash and underscores; should start with a letter"""
+    name: Optional[str] = None
+    """Name of the argument, should only contain numbers, letters, dash and underscores; should start with a letter.
+    If a name is provided, then the value of this argument can be set when running the script.
+    If name is not provided, then default_value must be provided and the value of this argument cannot be set while 
+    running the pipeline."""
 
     default_value: Optional[Any] = None  # set custom validator in the subclass
     """Default value of the argument if not provided"""
@@ -20,6 +23,8 @@ class GenieArgument(ABC, BaseModel):
 
     @validator("name")
     def name_valid(cls, v):
+        if v is None:
+            return v
         if not isinstance(v, str):
             raise ValueError(f"name must be a string, found: {v}")
         # check v contains only letters, numbers and underscores
@@ -29,12 +34,19 @@ class GenieArgument(ABC, BaseModel):
             raise ValueError(f"name must start with a letter, found: {v}")
         return v
 
-    def get(self, value: Optional[Any] = None):
+    @root_validator
+    def name_or_default_value(cls, values):
+        if "name" not in values and "default_value" not in values:
+            raise ValueError("Either name or default_value must be provided, both are none")
+        return values
+
+    def get(self, **kwargs):
         """get the value of the argument using the following precedence:
         1. value set by the pipeline object
         2. env_var
         3. default_value
         """
+        value = kwargs.get(self.name, None)
         if value is not None:
             return value
         if self.env_var is not None:

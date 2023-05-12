@@ -12,9 +12,9 @@ class DataFrameToCsvSink(GenieSink):
     reset_index: BoolArg = BoolArg(name="reset-pd-index", default_value=True)
 
     def put(self, data: pd.DataFrame, **kwargs):
-        if self.resolve_arg(self.reset_index, **kwargs):
+        if self.reset_index.get(**kwargs):
             data = data.reset_index()
-        data.to_csv(self.resolve_arg(self.path, **kwargs), index=self.resolve_arg(self.index, **kwargs))
+        data.to_csv(self.path.get(**kwargs), index=self.index.get(**kwargs))
 
 
 class CsvToDataFrameSource(GenieSource):
@@ -22,6 +22,4 @@ class CsvToDataFrameSource(GenieSource):
     kwargs: Dict[str, GenieArgument] = {}
 
     def get(self, **kwargs):
-        return pd.read_csv(
-            self.resolve_arg(self.path, **kwargs), **{k: self.resolve_arg(v, **kwargs) for k, v in self.kwargs.items()}
-        )
+        return pd.read_csv(self.path.get(**kwargs), **{k: v.get(**kwargs) for k, v in self.kwargs.items()})
