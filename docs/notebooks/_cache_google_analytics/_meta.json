@@ -92,7 +92,7 @@
         ]
     },
     "022f79575a9158730d7297c195130402694831886dcf199c4796a6fbb4d799ae78b9d9c7b33d10a008074397294fe4869b72b079bcb709570f79b3a617f48074": {
-        "id": "run_33539",
+        "id": "run_51794",
         "instructions": [
             "\ndef run(df):\n    df[\"hit_type\"] = df[\"hits\"].apply(lambda x: x[\"type\"])\n    return df\n"
         ],
@@ -241,7 +241,7 @@
         ]
     },
     "8d18225af4123ccdd71c8ffc58d9ab74846e86b621adb12a9796853fa958ac9a0ab75236b838fb33eb4f9781f07bd9ea4740c613aa2b6a18c675975abb4d35d0": {
-        "id": "run_67692",
+        "id": "run_20093",
         "instructions": [
             "\ndef run(df):\n    df[\"action_type\"] = df[\"hits\"].apply(lambda x: int(x[\"eCommerceAction\"][\"action_type\"]))\n    return df\n"
         ],

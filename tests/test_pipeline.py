@@ -63,7 +63,7 @@ def test_pipeline(client, pipeline_cache_dir, df, df_path, df_eval_path):
         PipelineStep(
             genie_result=gr_mul,
             data=gr_grp,
-            additional_input_arguments=[IntArg(name=multiplier_key)],
+            additional_inputs={multiplier_key: IntArg(name=multiplier_key)},
             sink=sink,
         ),
     ]

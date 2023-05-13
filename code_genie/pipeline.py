@@ -3,7 +3,7 @@ import os
 import time
 from typing import Any, Dict, List, Optional, TypeVar, Union
 
-from pydantic import BaseModel, root_validator, validator
+from pydantic import BaseModel, validator
 
 from code_genie.genie import Genie, GenieResult
 from code_genie.io import (
@@ -14,6 +14,7 @@ from code_genie.io import (
     IntArg,
     StringArg,
 )
+from code_genie.io.argument import GenieArgument
 from code_genie.io.base import GenieSource
 
 Source = TypeVar("Source", CsvToDataFrameSource, BigQueryToDataframeSource)
@@ -26,25 +27,14 @@ class PipelineStep(BaseModel):
     """Result of the genie which should be run in this step"""
     data: Optional[Union[Source, GenieResult]] = None
     """Data to be passed to the genie for computation. This could be either a data source or a previous genie result"""
-    # base_input_genie: Optional[GenieResult] = None
-    # """Set this value if the base input to the genie should be read from a previous step; If a genie is set here, then
-    # the genie should have been run in a previous step in the pipeline"""
-    additional_input_sources: Optional[Dict[str, Source]] = None
-    """Set this value for each additional input to the genie which should be read from a source"""
-    additional_input_genies: Optional[Dict[str, GenieResult]] = None
-    """Set this value for each additional input to the genie which should be read from a previous step"""
-    additional_input_arguments: Optional[List[Argument]] = None
-    """Set this value for each additional input to the genie which should be read from a constant value passed as an
-    argument to the pipeline"""
+    additional_inputs: Optional[Dict[str, Union[Source, GenieResult, Argument]]] = None
+    """Set this value for each additional input to the genie. The dictionary key should be the name of the input
+    and the value could be one of the 3 things: 
+    1. A genie data source
+    2. A genie result from a previous step
+    3. A constant value to be passed as an argument to the pipeline"""
     sink: Optional[Sink] = None
     """If the output of this step needs to be exported, then a sink can be provided here"""
-
-    # # validate either one of base_input_source or base_input_genie should be set
-    # @root_validator()
-    # def _validate_base_input(cls, values):
-    #     if (values.get("base_input_source") is None) and (values.get("base_input_genie") is None):
-    #         raise ValueError("Either base_input_source or base_input_genie should be set")
-    #     return values
 
 
 class GeniePipeline(BaseModel):
@@ -119,12 +109,13 @@ class GeniePipeline(BaseModel):
 
             # get the additional inputs
             additional_inputs = {}
-            for name, source in (step.additional_input_sources or {}).items():
-                additional_inputs[name] = source.get(**args)
-            for name, genie in (step.additional_input_genies or {}).items():
-                additional_inputs[name] = self._get_cached_genie_result(step_id, genie.id, cached_genie_results)
-            for argument in step.additional_input_arguments or []:
-                additional_inputs[argument.name] = argument.get(**args)
+            for name, add_input in (step.additional_inputs or {}).items():
+                if isinstance(add_input, GenieSource):
+                    additional_inputs[name] = add_input.get(**args)
+                if isinstance(add_input, GenieResult):
+                    additional_inputs[name] = self._get_cached_genie_result(step_id, add_input.id, cached_genie_results)
+                if isinstance(add_input, GenieArgument):
+                    additional_inputs[name] = add_input.get(**args)
 
             # run the genie
             genie = Genie(data=base_input)
