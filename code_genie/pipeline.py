@@ -58,6 +58,7 @@ class GeniePipeline(BaseModel):
     """List of steps in the pipeline"""
 
     def add(self, step: PipelineStep):
+        """Add a step to the pipeline"""
         return self.copy(update={"steps": self.steps + [step]})
 
     @validator("steps")
@@ -97,7 +98,8 @@ class GeniePipeline(BaseModel):
         return cached_results[genie_id].result
 
     def run(self, args: Dict[str, Any]):
-        """Run the pipeline"""
+        """Run the pipeline using the value of the arguments passed. Note that all arguments which do not have a
+        default value needs to be passed here for the pipeline to run."""
         cached_genie_results: Dict[str, GenieResult] = {}
         for i, step in enumerate(self.steps):
             print(f"Running step {i+1}: {step.genie_result.id}")

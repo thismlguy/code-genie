@@ -1,7 +1,7 @@
 import os
 import warnings
 from abc import ABC
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, root_validator, validator
 
@@ -40,8 +40,9 @@ class GenieArgument(ABC, BaseModel):
             raise ValueError("Either name or default_value must be provided, both are none")
         return values
 
-    def get(self, **kwargs):
-        """get the value of the argument using the following precedence:
+    def get(self, **kwargs: Dict[str, "GenieArgument"]):
+        """Resolve the value of the arg from the dictionary of arguments passed to the pipeline. Resolution is done
+        using the following precedence:
         1. value set by the pipeline object
         2. env_var
         3. default_value

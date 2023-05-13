@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0
+
+    * Introduce pipelines
+        * Export pipelines to json
+        * Load pipelines and rerun for different inputs
+    * Add capability to define a custom function as a genie
+
 ## 0.3.1
 
     * Make the return type a basemodel with multiple attributes instead of the result directly

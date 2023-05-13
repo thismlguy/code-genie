@@ -28,7 +28,7 @@ class BigQueryToDataframeSource(_WithCredentials):
     query_args: Dict[str, GenieArgument]
     """Any arguments to be used in the query. These will be passed to the query using the format method."""
 
-    def get(self, **kwargs):
+    def get(self, **kwargs: Dict[str, GenieArgument]):
         query = self.query
         if self.query_args:
             query = query.format(**{k: v.get(**kwargs) for k, v in self.query_args.items()})
