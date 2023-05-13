@@ -40,7 +40,7 @@ class GenieArgument(ABC, BaseModel):
             raise ValueError("Either name or default_value must be provided, both are none")
         return values
 
-    def get(self, **kwargs: Dict[str, "GenieArgument"]):
+    def get(self, **kwargs: Dict[str, Any]):
         """Resolve the value of the arg from the dictionary of arguments passed to the pipeline. Resolution is done
         using the following precedence:
         1. value set by the pipeline object

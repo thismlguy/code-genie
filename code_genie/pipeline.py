@@ -1,7 +1,7 @@
 import json
 import os
 import time
-from typing import Any, Dict, List, Optional, TypeVar
+from typing import Any, Dict, List, Optional, TypeVar, Union
 
 from pydantic import BaseModel, root_validator, validator
 
@@ -14,6 +14,7 @@ from code_genie.io import (
     IntArg,
     StringArg,
 )
+from code_genie.io.base import GenieSource
 
 Source = TypeVar("Source", CsvToDataFrameSource, BigQueryToDataframeSource)
 Sink = TypeVar("Sink", bound=DataFrameToCsvSink)
@@ -23,11 +24,11 @@ Argument = TypeVar("Argument", StringArg, IntArg, BoolArg)
 class PipelineStep(BaseModel):
     genie_result: GenieResult
     """Result of the genie which should be run in this step"""
-    base_input_source: Optional[Source] = None
-    """Set this value if the base input to the genie should be read from a source"""
-    base_input_genie: Optional[GenieResult] = None
-    """Set this value if the base input to the genie should be read from a previous step; If a genie is set here, then
-    the genie should have been run in a previous step in the pipeline"""
+    data: Optional[Union[Source, GenieResult]] = None
+    """Data to be passed to the genie for computation. This could be either a data source or a previous genie result"""
+    # base_input_genie: Optional[GenieResult] = None
+    # """Set this value if the base input to the genie should be read from a previous step; If a genie is set here, then
+    # the genie should have been run in a previous step in the pipeline"""
     additional_input_sources: Optional[Dict[str, Source]] = None
     """Set this value for each additional input to the genie which should be read from a source"""
     additional_input_genies: Optional[Dict[str, GenieResult]] = None
@@ -38,12 +39,12 @@ class PipelineStep(BaseModel):
     sink: Optional[Sink] = None
     """If the output of this step needs to be exported, then a sink can be provided here"""
 
-    # validate either one of base_input_source or base_input_genie should be set
-    @root_validator()
-    def _validate_base_input(cls, values):
-        if (values.get("base_input_source") is None) and (values.get("base_input_genie") is None):
-            raise ValueError("Either base_input_source or base_input_genie should be set")
-        return values
+    # # validate either one of base_input_source or base_input_genie should be set
+    # @root_validator()
+    # def _validate_base_input(cls, values):
+    #     if (values.get("base_input_source") is None) and (values.get("base_input_genie") is None):
+    #         raise ValueError("Either base_input_source or base_input_genie should be set")
+    #     return values
 
 
 class GeniePipeline(BaseModel):
@@ -64,7 +65,7 @@ class GeniePipeline(BaseModel):
     @validator("steps")
     def _validate_steps(cls, v: List[PipelineStep]):
         # base_input of the first step should be a genie source
-        if v[0].base_input_source is None:
+        if v[0].data is None:
             raise ValueError(f"base_input_source of the first step should be set, found None")
         # there should be atleast 1 sink
         if all(step.sink is None for step in v):
@@ -107,12 +108,14 @@ class GeniePipeline(BaseModel):
             start_time = time.time()
             step_id = step.genie_result.id
             # get the base input
-            if step.base_input_source is not None:
-                base_input = step.base_input_source.get(**args)
-            else:
+            if isinstance(step.data, GenieSource):
+                base_input = step.data.get(**args)
+            elif isinstance(step.data, GenieResult):
                 base_input = self._get_cached_genie_result(
-                    step_id=step_id, genie_id=step.base_input_genie.id, cached_results=cached_genie_results
+                    step_id=step_id, genie_id=step.data.id, cached_results=cached_genie_results
                 )
+            else:
+                raise ValueError(f"Invalid type for base_input: {type(step.data)}")
 
             # get the additional inputs
             additional_inputs = {}
@@ -121,7 +124,7 @@ class GeniePipeline(BaseModel):
             for name, genie in (step.additional_input_genies or {}).items():
                 additional_inputs[name] = self._get_cached_genie_result(step_id, genie.id, cached_genie_results)
             for argument in step.additional_input_arguments or []:
-                additional_inputs[argument.name] = argument.get(args.get(argument.name))
+                additional_inputs[argument.name] = argument.get(**args)
 
             # run the genie
             genie = Genie(data=base_input)
