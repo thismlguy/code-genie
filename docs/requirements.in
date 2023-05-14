@@ -3,3 +3,4 @@ sphinx_rtd_theme
 nbsphinx
 sphinx_gallery
 autodoc-pydantic
+google-cloud-bigquery>=3.10,<4
