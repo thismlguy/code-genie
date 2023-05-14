@@ -1,0 +1,24 @@
+{
+    "b7623d55f85772175d00129b51334ee1ef3c202664cb2903cf026cbfb25860b6639c043f1756b0332eeb91e5156966cf3802ed96426f207f515e2077e486ef85": {
+        "id": "create_means_df_73453",
+        "fn_name": "create_means_df",
+        "instructions": [
+            "create a df with mean values of x grouped by y"
+        ],
+        "inputs": [
+            "df"
+        ]
+    },
+    "9f6bcf205842b4c6d448af9417d26be53c7bd570712c1a18c5089e0a2cf0b50b356e1a5d3c6f951060dcb38d9ee64380176ac869bb48ee6540b0d9d6ada1714a": {
+        "id": "multiply_df_98613",
+        "fn_name": "multiply_df",
+        "instructions": [
+            "multiply values of x by multiplier"
+        ],
+        "inputs": [
+            "df",
+            "multiplier"
+        ],
+        "code": "import pandas as pd\n\ndef multiply_df(df: pd.DataFrame, multiplier: int) -> pd.DataFrame:\n    df['x'] = df['x'] * multiplier\n    return df\n"
+    }
+}

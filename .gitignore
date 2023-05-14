@@ -137,3 +137,4 @@ key/
 # test cache
 tests/_cache
 test_reports
+tests/_pipeline_cache/data

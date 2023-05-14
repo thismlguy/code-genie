@@ -52,6 +52,9 @@ notebook = [
     "opendatasets>=0.1.22,<0.2",
     "wordcloud>=1.8,<2",
 ]
+gcp = [
+    "google-cloud-bigquery>=3.10,<4"
+]
 
 [project.urls]
 Documentation = "https://code-genie.readthedocs.io/en/latest/"

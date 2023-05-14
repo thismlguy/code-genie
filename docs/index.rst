@@ -11,7 +11,11 @@ Welcome to code-genie's documentation!
    :hidden:
 
    Home <self>
-   API <api>
+   Genie API <genie>
+   Pipeline API <pipeline>
+   Arguments API <arguments>
+   Sources API <sources>
+   Sinks API <sinks>
    Examples <examples>
 
 code-genie will help you bring the power of chatGPT technology to your notebooks.

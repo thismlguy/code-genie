@@ -38,8 +38,8 @@ class Client:
         response.raise_for_status()
         return GetExecutableResponse.parse_obj(response.json())
 
-    def get(self, instructions: List[str], inputs: Dict[str, str]) -> Tuple[str, str]:
+    def get(self, instructions: List[str], inputs: Dict[str, str]) -> str:
         request = GetExecutableRequest(instructions=instructions, inputs=inputs, allowed_imports=[])
         # send a request with given data
         response = self._get_response(self.ENDPOINT, request)
-        return response.code, response.fn_name
+        return response.code
